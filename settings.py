@@ -5,10 +5,13 @@ import os
 COMMAND_PREFIX = "!"
 
 # The bot token. Keep this secret!
-BOT_TOKEN = "Get this from https://discord.com/developers/applications"
+# f = open("TOKEN", "r")
+# BOT_TOKEN = f.readline()
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+# f.close()
 
 # The now playing game. Set this to anything false-y ("", None) to disable it
-NOW_PLAYING = COMMAND_PREFIX + "commands"
+NOW_PLAYING = ""
 
 # Base directory. Feel free to use it if you want.
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))

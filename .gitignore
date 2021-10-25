@@ -102,5 +102,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# custom
+events/example_event.py
+events/example_command.py
 
 # End of https://www.gitignore.io/api/python

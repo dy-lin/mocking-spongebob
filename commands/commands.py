@@ -12,7 +12,8 @@ class Commands(BaseCommand):
 
     async def handle(self, params, message, client):
         from message_handler import COMMAND_HANDLERS
-        msg = message.author.mention + "\n"
+        # msg = message.author.mention + "\n"
+        msg = ""
 
         # Displays all descriptions, sorted alphabetically by command name
         for cmd in sorted(COMMAND_HANDLERS.items()):
