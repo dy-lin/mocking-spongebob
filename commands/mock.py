@@ -1,8 +1,7 @@
 from commands.base_command  import BaseCommand
-from utils                  import get_emoji
 from random                 import randint
 import string
-
+import os
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
@@ -36,9 +35,12 @@ class Mock(BaseCommand):
                                 #      "Please, provide valid numbers")
            # return
         mocked = "*"
-        randomize = False
+        randomize = os.getenv("RANDOMIZE")
 
-        if randomize == False:
+        if randomize == None:
+            randomize = "False"
+
+        if randomize == "False":
             if text[0] == "i":
                 count = 0
             else:
@@ -60,7 +62,12 @@ class Mock(BaseCommand):
                     mocked = mocked + text[idx].upper()
                     count += 1
         else:
-            for idx in range(len(text)):
+            if text[0] == "i":
+                start = 1
+                mocked = mocked + text[0]
+            else:
+                start = 0
+            for idx in range(start, len(text)):
                 roll = randint(0,1)
                 if text[idx] == "*" or text[idx] == "_":
                     continue
