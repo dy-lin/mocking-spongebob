@@ -1,7 +1,7 @@
 from commands.base_command  import BaseCommand
 from utils                  import get_emoji
 from random                 import randint
-
+import string
 
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
@@ -30,24 +30,43 @@ class Mock(BaseCommand):
         # 'client' is the bot Client object
 
         # try:
-        text = " ".join(params)
+        text = " ".join(params).lower()
         # except ValueError:
            #  await client.send_message(message.channel,
                                 #      "Please, provide valid numbers")
            # return
         mocked = "*"
-        count = randint(0,1)
-        for idx in range(len(text)):
-            if text[idx] == " ":
-                mocked = mocked + " "
-                count += 2
-            elif text[idx] == "*":
-                continue
-            elif not count % 2 :
-                mocked = mocked + text[idx].lower()
-                count += 1
+        randomize = False
+
+        if randomize == False:
+            if text[0] == "i":
+                count = 0
             else:
-                mocked = mocked + text[idx].upper()
-                count += 1
+                count = randint(0,1)
+
+            for idx in range(len(text)):
+                if text[idx] == " ":
+                    mocked = mocked + text[idx]
+                    count += 2
+                elif text[idx] == "*" or text[idx] == "_":
+                    continue
+                elif text[idx] in string.punctuation:
+                    mocked = mocked + text[idx]
+                    count += 2
+                elif not count % 2 :
+                    mocked = mocked + text[idx].lower()
+                    count += 1
+                else:
+                    mocked = mocked + text[idx].upper()
+                    count += 1
+        else:
+            for idx in range(len(text)):
+                roll = randint(0,1)
+                if text[idx] == "*" or text[idx] == "_":
+                    continue
+                elif roll == 0:
+                    mocked = mocked + text[idx].lower()
+                else
+                    mocked = mocked + text[idx].upper()
         mocked = mocked + "*"
         await message.channel.send(mocked)
