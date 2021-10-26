@@ -66,7 +66,7 @@ class Mock(BaseCommand):
                     continue
                 elif roll == 0:
                     mocked = mocked + text[idx].lower()
-                else
+                else:
                     mocked = mocked + text[idx].upper()
         mocked = mocked + "*"
         await message.channel.send(mocked)
