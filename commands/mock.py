@@ -36,9 +36,13 @@ class Mock(BaseCommand):
            # return
         mocked = "*"
         randomize = os.getenv("RANDOMIZE")
+        fix = os.getenv("FIXL")
 
         if randomize == None:
             randomize = "False"
+
+        if fix == None:
+            fix = "False"
 
         if randomize == "False":
             if text[0] == "i":
@@ -76,4 +80,8 @@ class Mock(BaseCommand):
                 else:
                     mocked = mocked + text[idx].upper()
         mocked = mocked + "*"
+        
+        if fix == "True":
+            mocked = mocked.replace("IlI", "iLi").replace("Il", "iL").replace("lI", "Li")
+        
         await message.channel.send(mocked)
