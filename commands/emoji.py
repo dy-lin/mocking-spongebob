@@ -42,7 +42,7 @@ class Emoji(BaseCommand):
 
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
-        text = " ".join(params).upper().replace(" ", "  ")
+        text = " ".join(params).upper().replace(" ", "  ").replace("||", "|")
         numbers = {
         "0": ":zero: ",
         "1": ":one: ",
@@ -63,6 +63,8 @@ class Emoji(BaseCommand):
                 text = text.replace(i, ":exclamation: ")
             elif i == "#":
                 text = text.replace(i, ":hash: ")
+            elif i == "|":
+                continue
             elif i in string.punctuation:
                 text = text.replace(i, "")
             elif i in string.digits:
@@ -71,5 +73,5 @@ class Emoji(BaseCommand):
                 emoji = ":regional_indicator_" + i.lower() + ": "
                 text = text.replace(i, emoji)
 
-        text = text.replace(":exclamation: :exclamation:", ":bangbang:").replace(":exclamation: :question:", ":interrobang:")
+        text = text.replace("|", "||").replace(":exclamation: :exclamation:", ":bangbang:").replace(":exclamation: :question:", ":interrobang:")
         await message.channel.send(text)
