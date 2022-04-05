@@ -30,7 +30,7 @@ class Games(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
             
-        df = pd.read_table("../data/Restaurants.tsv")
+        df = pd.read_table("/data/Restaurants.tsv")
          
 
         lower_bound = 1

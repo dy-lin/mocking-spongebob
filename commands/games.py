@@ -36,7 +36,7 @@ class Games(BaseCommand):
 
         valid = ["Online", "Local"]
             
-        df = pd.read_table("../data/Games.tsv")
+        df = pd.read_table("/data/Games.tsv")
         
         if arg not in valid:
             options = df
