@@ -2,7 +2,7 @@ aiohttp==3.8
 APScheduler
 async-timeout
 chardet
-discord.py
+discord.py==1.7.3
 emoji
 multidict
 pytz
