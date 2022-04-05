@@ -1,4 +1,4 @@
-aiohttp=3.7
+aiohttp==3.7
 APScheduler
 async-timeout
 chardet
