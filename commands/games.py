@@ -29,7 +29,7 @@ class Games(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
-        if len(params) == 0:
+        if len(params) != 0:
             arg = str(params[0]).capitalize()
         else:
             arg = "All"

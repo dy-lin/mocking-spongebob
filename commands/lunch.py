@@ -35,6 +35,8 @@ class Lunch(BaseCommand):
 
         lower_bound = 1
         upper_bound = df.shape[0]
+        
+        num = randint(lower_bound, upper_bound)
 
         selected = df.iloc[[num]][['Restaurant']]
 
