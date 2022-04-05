@@ -18,7 +18,7 @@ class Games(BaseCommand):
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
         # If no params are expected, leave this list empty or set it to None
-        params = ["Co-op mode"]
+        params = ["Co-op mode: Online or Local"]
         super().__init__(description, params)
 
     # Override the handle() method
