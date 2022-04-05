@@ -18,7 +18,7 @@ class Games(BaseCommand):
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
         # If no params are expected, leave this list empty or set it to None
-        params = [""]
+        params = []
         super().__init__(description, params)
 
     # Override the handle() method
@@ -30,7 +30,7 @@ class Games(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
             
-        df = pd.read_table("/data/Restaurants.tsv")
+        df = pd.read_table("/app/data/Restaurants.tsv")
          
 
         lower_bound = 1

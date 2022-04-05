@@ -18,7 +18,7 @@ class Games(BaseCommand):
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
         # If no params are expected, leave this list empty or set it to None
-        params = [""]
+        params = []
         super().__init__(description, params)
 
     # Override the handle() method
@@ -36,7 +36,7 @@ class Games(BaseCommand):
 
         valid = ["Online", "Local"]
             
-        df = pd.read_table("/data/Games.tsv")
+        df = pd.read_table("/app/data/Games.tsv")
         
         if arg not in valid:
             options = df
