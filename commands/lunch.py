@@ -29,8 +29,13 @@ class Lunch(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
-            
-        df = pd.read_table("/app/data/Restaurants.tsv")
+
+        sheet_id = "1eQA366OF97O_rdDun4ukkvfnhioYFP-LuI4njNgzR6g"    
+        sheet_name = "Sheet1"
+        url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+
+        df = pd.read_csv(url)
+        # df = pd.read_table("/app/data/Restaurants.tsv")
          
 
         lower_bound = 1
