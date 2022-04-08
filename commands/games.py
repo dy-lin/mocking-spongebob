@@ -35,8 +35,11 @@ class Games(BaseCommand):
             arg = "All"
 
         valid = ["Online", "Local"]
-            
-        df = pd.read_table("/app/data/Games.tsv")
+        sheet_id = "110P2svPu-ChX7edrnf0FWaWV40FI2fCqUd2jst9LSpI"
+        sheet_name = "Sheet1"
+        url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"    
+        # df = pd.read_table("/app/data/Games.tsv")
+        df = pd.read_csv(url)
         
         if arg not in valid:
             options = df
