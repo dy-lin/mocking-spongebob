@@ -25,5 +25,5 @@ class Sangria(BaseCommand):
         oj = round(250/1500*500)
         peaches = round(45/1500*500)
         sprite = round(330/1500*500)
-        msg = f"For 1 (500 mL) cup of Peach Sangria:\n\n**Peach schnapps:** {schnapps} mL \n**White wine:** {wine} mL\n**Orange juice:** {oj} mL\n**Sprite:** {sprite}\n**Peaches:** {peaches}"
+        msg = f"For 1 (500 mL) cup of Peach Sangria:\n\n**Peach schnapps:** {schnapps} mL \n**White wine:** {wine} mL\n**Orange juice:** {oj} mL\n**Sprite:** {sprite} mL\n**Peaches:** {peaches} mL"
         await message.channel.send(msg)
