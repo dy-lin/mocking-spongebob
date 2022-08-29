@@ -33,7 +33,7 @@ class Convert(BaseCommand):
         times = []
         for bound in time:
             num = int(re.findall('[0-9]+', bound)[0])
-            times.append(round(num * 0.8))
+            times.append(round(num * 0.7))
 
         if len(times) == 1:
             final_time = f"{times[0]} min"
