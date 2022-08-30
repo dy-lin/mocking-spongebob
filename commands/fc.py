@@ -25,9 +25,11 @@ class Fc(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
-        degC = round((int(params[0].upper().replace("F", "").replace(" ",""))-32)*(5/9))
+        degF = int(params[0].upper().replace("F", "").replace(" ",""))
+        degC = round((degF-32)*(5/9))
         # options = options.reset_index()
         
         degree_sign = u'\N{DEGREE SIGN}'
-        msg = f"{degC}{degree_sign}C"
+        arrow = u'\u2192'
+        msg = f"{degF}{degree_sign}F {arrow} {degC}{degree_sign}C"
         await message.channel.send(msg)
