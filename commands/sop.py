@@ -45,9 +45,10 @@ class Sop(BaseCommand):
             mode = row['Mode'].capitalize()
             time = round(row['Time'])
             temperature = round(row['Temperature'])
+            celsius = round((temperature-32)*5/9)
             preset = row['Preset']
             notes = row['Notes']
-            msg.append(f"**{name}:** {mode} at {temperature}{degree_sign}F for {time} min.")
+            msg.append(f"**{name}:** {mode} at {temperature}{degree_sign}F ({celsius}{degree_sign}C) for {time} min.")
 
         text = '\n'.join(msg)
         await message.channel.send(text)
