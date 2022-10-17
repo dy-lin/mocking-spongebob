@@ -10,8 +10,9 @@ import re
 class Convert(BaseCommand):
 
     def __init__(self):
+        degree_sign = u'\N{DEGREE SIGN}'
         # A quick description for the help message
-        description = "Converts oven instructions to airfryer instructions"
+        description = f"Converts oven instructions to airfryer instructions (-25{degree_sign}F, -30% time)"
         # A list of parameters that the command will take as input
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
