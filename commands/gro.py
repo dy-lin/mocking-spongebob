@@ -27,6 +27,7 @@ class Gro(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
         # await message.channel.send(f"{os.getcwd()}")
+        savefile = "/Users/brian/mocking-spongebob/files/groceries.json"
         if len(params) > 0: 
             subcommand = params[0].lower()
 
@@ -45,8 +46,8 @@ class Gro(BaseCommand):
             else:
                 item = ""
 
-            if os.path.exists("../files/groceries.json") == True:
-                with open("../files/groceries.json", "r") as f:
+            if os.path.exists(savefile) == True:
+                with open(savefile, "r") as f:
                     groceries = json.load(f)
             else:
                 groceries = {}
@@ -72,7 +73,7 @@ class Gro(BaseCommand):
                             groceries[sublist].append(i)
                         await message.channel.send(f"Added *{item}* to **{sublist}**.")
                         jsonfile = json.dumps(groceries, indent = 4)
-                        with open("../files/groceries.json", "w") as f:
+                        with open(savefile, "w") as f:
                             f.write(jsonfile)
                     else:
                         await message.channel.send(f"Missing item to be added.")
@@ -97,7 +98,7 @@ class Gro(BaseCommand):
                                         groceries[sublist][index-1] = new_item
                                         await message.channel.send(f"Edited *{old_item}* to *{new_item}* in **{sublist}**.")
                                         jsonfile = json.dumps(groceries, indent = 4)
-                                        with open("../files/groceries.json", "w") as f:
+                                        with open(savefile, "w") as f:
                                             f.write(jsonfile)
                                     elif subcommand == "append":
                                         old_item = groceries[sublist][index-1] 
@@ -105,7 +106,7 @@ class Gro(BaseCommand):
                                         groceries[sublist][index-1] = old_item + " " + new_item
                                         await message.channel.send(f"Appended *{new_item}* to *{old_item}* in **{sublist}**.")
                                         jsonfile = json.dumps(groceries, indent = 4)
-                                        with open("../files/groceries.json", "w") as f:
+                                        with open(savefile, "w") as f:
                                             f.write(jsonfile)
                             except ValueError as ve:
                                 await message.channel.send(f"First item must be an index: {string[0]}")
@@ -152,7 +153,7 @@ class Gro(BaseCommand):
                             text = ", ".join(removed)
                             await message.channel.send(f"Removed *{text}* from **{sublist}**.")
                             jsonfile = json.dumps(groceries, indent = 4)
-                            with open("../files/groceries.json", "w") as f:
+                            with open(savefile, "w") as f:
                                 f.write(jsonfile)
                         else:
                             await message.channel.send(f"Missing item to be removed.")
@@ -161,7 +162,7 @@ class Gro(BaseCommand):
                         groceries = {}
                         await message.channel.send("Deleted all grocery lists.")
                         jsonfile = json.dumps(groceries, indent = 4)
-                        with open("../files/groceries.json", "w") as f:
+                        with open(savefile, "w") as f:
                             f.write(jsonfile)
                     else:
                         if sublist not in list(groceries.keys()):
@@ -173,14 +174,14 @@ class Gro(BaseCommand):
                             groceries.pop(sublist)
                             await message.channel.send(f"Deleted **{sublist}**.")
                             jsonfile = json.dumps(groceries, indent = 4)
-                            with open("../files/groceries.json", "w") as f:
+                            with open(savefile, "w") as f:
                                 f.write(jsonfile)
                 elif subcommand == "clear":
                     if sublist == "all":
                         for i in list(groceries.keys()):
                             groceries[i] = []
                         jsonfile = json.dumps(groceries, indent = 4)
-                        with open("../files/groceries.json", "w") as f:
+                        with open(savefile, "w") as f:
                             f.write(jsonfile)
                     elif sublist not in list(groceries.keys()):
                         if sublist != "":
@@ -191,7 +192,7 @@ class Gro(BaseCommand):
                         groceries[sublist] = []
                         await message.channel.send(f"Cleared **{sublist}**.")
                         jsonfile = json.dumps(groceries, indent = 4)
-                        with open("../files/groceries.json", "w") as f:
+                        with open(savefile, "w") as f:
                             f.write(jsonfile)
                 elif subcommand == "list":
                     if sublist == "all" or sublist == "":
@@ -228,8 +229,8 @@ class Gro(BaseCommand):
                         text = '\n'.join(msg)
                         await message.channel.send(text) 
         else:
-            if os.path.exists("../files/groceries.json") == True:
-                with open("../files/groceries.json", "r") as f:
+            if os.path.exists(savefile) == True:
+                with open(savefile, "r") as f:
                     groceries = json.load(f)
                 if len(groceries) > 0:
                     msg = []
