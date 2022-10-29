@@ -105,5 +105,6 @@ venv.bak/
 # custom
 events/example_event.py
 events/example_command.py
-
+ACCESS_TOKEN
+files/
 # End of https://www.gitignore.io/api/python
