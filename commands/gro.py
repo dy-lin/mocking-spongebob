@@ -35,6 +35,13 @@ class Gro(BaseCommand):
                 sublist = params[1]
                 if sublist != sublist.upper() and sublist != "all":
                     sublist = sublist.capitalize()
+                if sublist == "Ikea":
+                    sublist = "IKEA"
+                if sublist == "T&t":
+                    sublist = "T&T"
+                if sublist == "Tnt" or sublist == "TNT":
+                    sublist = "T&T"
+                    
             else:
                 sublist = ""
 
