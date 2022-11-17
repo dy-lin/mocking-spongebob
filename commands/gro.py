@@ -32,7 +32,12 @@ class Gro(BaseCommand):
             subcommand = params[0].lower()
 
             if len(params) >= 2:
-                sublist = params[1]
+                # if it starts with quotes then split it into quotes
+                # if params[1].startswith('"'):
+                #     temp = " ".join(params)
+                #     temp.split('"')[2].remove(" $").remove("^ ")
+                sublist = params[1] # how to account for two words?
+
                 if sublist != sublist.upper() and sublist != "all":
                     sublist = sublist.capitalize()
                 if sublist == "Ikea":
@@ -41,6 +46,10 @@ class Gro(BaseCommand):
                     sublist = "T&T"
                 if sublist == "Tnt" or sublist == "TNT":
                     sublist = "T&T"
+                if sublist == "Ct":
+                    sublist = "Canadian Tire"
+                if sublist == "Canadiantire":
+                    sublist = "Canadian Tire"
                     
             else:
                 sublist = ""
