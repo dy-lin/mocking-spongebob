@@ -30,27 +30,40 @@ class Gro(BaseCommand):
         savefile = "/Users/brian/mocking-spongebob/files/groceries.json"
         if len(params) > 0: 
             subcommand = params[0].lower()
-
             if len(params) >= 2:
-                # if it starts with quotes then split it into quotes
-                # if params[1].startswith('"'):
-                #     temp = " ".join(params)
-                #     temp.split('"')[2].remove(" $").remove("^ ")
-                sublist = params[1] # how to account for two words?
+                # keep a dict of regex matches and proper name of lists?
+                # use value to fetch key???
+                # print(list(mydict.keys())[list(mydict.values()).index("ikea")]
 
-                if sublist != sublist.upper() and sublist != "all":
-                    sublist = sublist.capitalize()
-                if sublist == "Ikea":
-                    sublist = "IKEA"
-                if sublist == "T&t":
-                    sublist = "T&T"
-                if sublist == "Tnt" or sublist == "TNT":
-                    sublist = "T&T"
-                if sublist == "Ct":
-                    sublist = "Canadian Tire"
-                if sublist == "Canadiantire":
-                    sublist = "Canadian Tire"
-                    
+                if subcommand == "new":
+                    if os.path.exists(savefile) == True:
+                        with open(savefile, "r") as f:
+                            groceries = json.load(f)
+                    sublist = " ".join(params[1:]).replace('"','').title()
+                    groceries[sublist] = []
+
+                    jsonfile = json.dumps(groceries, indent = 4)
+                    with open(savefile, "w") as f:
+                        f.write(jsonfile)
+                    await message.channel.send(f"Created new list: **{sublist}**")
+                    return
+                else:
+                    if params[1].startswith('"'):
+                        temp = " ".join(params)
+                        sublist = temp.split('"')[1].title()
+                    else:
+                        if subcommand == "list" and len(params[1:]) > 1:
+                            sublist = " ".join(params[1:]).title()
+                        else:
+                            sublist = params[1] # how to account for two words?
+                            if sublist != sublist.upper() and sublist != "all":
+                                sublist = sublist.capitalize()
+                            if sublist == "Ikea":
+                                sublist = "IKEA"
+                            if sublist == "T&t" or sublist == "Tnt" or sublist == "TNT":
+                                sublist = "T&T"
+                            if sublist == "Ct":
+                                sublist = "Canadian Tire"
             else:
                 sublist = ""
 
@@ -58,10 +71,13 @@ class Gro(BaseCommand):
             # how do quotes work in discord bot input?
             # what is default type for params?
             if len(params) >= 3:
-                item = " ".join(params[2:]).lower()# .capitalize()
+                if params[1].startswith('"'):
+                    temp = " ".join(params)
+                    item = " ".join([x.strip() for x in temp.split('"')[2:]]).lower()
+                else:
+                    item = " ".join(params[2:]).lower()# .capitalize()
             else:
                 item = ""
-
             if os.path.exists(savefile) == True:
                 with open(savefile, "r") as f:
                     groceries = json.load(f)
@@ -71,6 +87,7 @@ class Gro(BaseCommand):
             # will be called groceries
             if subcommand not in ["add", "remove", "clear", "list", "delete", "edit", "append"]:
                 await message.channel.send(f"Unrecognized subcommand: *{subcommand}*")
+                return
             else:
                 # CHECKBOX = u'\u2751'
 
@@ -166,11 +183,11 @@ class Gro(BaseCommand):
                                         groceries[sublist].remove(i)
                                         removed.append(i)
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
-                            text = ", ".join(removed)
-                            await message.channel.send(f"Removed *{text}* from **{sublist}**.")
-                            jsonfile = json.dumps(groceries, indent = 4)
-                            with open(savefile, "w") as f:
-                                f.write(jsonfile)
+                                        text = ", ".join(removed)
+                                        await message.channel.send(f"Removed *{text}* from **{sublist}**.")
+                                        jsonfile = json.dumps(groceries, indent = 4)
+                                        with open(savefile, "w") as f:
+                                            f.write(jsonfile)
                         else:
                             await message.channel.send(f"Missing item to be removed.")
                 elif subcommand == "delete":
