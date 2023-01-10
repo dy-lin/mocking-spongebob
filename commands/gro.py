@@ -71,7 +71,7 @@ class Gro(BaseCommand):
             # how do quotes work in discord bot input?
             # what is default type for params?
             if len(params) >= 3:
-                if params[1].startswith('"'):
+                if params[1].startswith('"'): 
                     temp = " ".join(params)
                     item = " ".join([x.strip() for x in temp.split('"')[2:]]).lower()
                 else:
@@ -145,29 +145,39 @@ class Gro(BaseCommand):
                                 await message.channel.send(f"First item must be an index: {string[0]}")
                         else:
                             await message.channel.send(f"Missing item to {subcommand}.")
-
+                # TODO:
+                # !gro remove Costco 3 doesn't work?!
                 elif subcommand == "remove":
+                    # if the sublist is not in the grocery keys, check if that arg is a number after splitting by commas
                     if sublist not in list(groceries.keys()):
                         indices = sublist.split(", ")
                         try:
+                            # if the first item can be converted into an int, means that it was intended as the indices number and the list is missing
                             x = int(indices[0])
                             await message.channel.send(f"Missing list argument.")
                         except ValueError as ve:
+                            # if indices cannot be converted into int and is empty string, then the list arg is missing entirely
                             if indices[0] == "":
                                 await message.channel.send(f"Missing list argument.")
+                            # if indices is still a string, then it means the list given unrecognized
                             else:
                                 await message.channel.send(f"Unrecognized list: **{sublist}**")
                     else:
+                        # the list is valid, and the item is slot is not empty
                         if item != "":
+                            # assume that multiple indices are given
                             indices = item.split(", ")
+                            # create a copy of the grocery list to retain the indices
                             copy = groceries[sublist].copy()
                             removed = []
+                            # for each indices
                             for i in indices:
                                 try:
+                                    # if indices is an int
                                     index = int(i)
+                                    # then check if its in range of the available indices (+1 since python iz zero based) 
                                     if index not in range(1, len(copy)+1):
                                         await message.channel.send("Unrecognized index: *{index}*")
-                                        continue
                                     else:
                                         item = copy[index-1] # get item from original list
                                         idx = groceries[sublist].index(item) # get new index from new list using original item
@@ -175,19 +185,19 @@ class Gro(BaseCommand):
                                         removed.append(item)
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
                                 except ValueError as ve:
+                                    # if the indices is actually an item itself
                                     if i not in groceries[sublist]:
                                         await message.channel.send(f"Unrecognized item: *{i}*")
-                                        continue
                                     else:
                                         # remove using name
                                         groceries[sublist].remove(i)
                                         removed.append(i)
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
-                                        text = ", ".join(removed)
-                                        await message.channel.send(f"Removed *{text}* from **{sublist}**.")
-                                        jsonfile = json.dumps(groceries, indent = 4)
-                                        with open(savefile, "w") as f:
-                                            f.write(jsonfile)
+                            text = ", ".join(removed)
+                            await message.channel.send(f"Removed *{text}* from **{sublist}**.")
+                            jsonfile = json.dumps(groceries, indent = 4)
+                            with open(savefile, "w") as f:
+                                f.write(jsonfile)
                         else:
                             await message.channel.send(f"Missing item to be removed.")
                 elif subcommand == "delete":
