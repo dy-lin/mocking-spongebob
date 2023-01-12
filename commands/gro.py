@@ -5,6 +5,15 @@ import os.path
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
 
+
+
+#------
+# TODO
+# implement message editing for last !gro list command
+# ------
+
+
+
 # So, a command class named Random will generate a 'random' command
 class Gro(BaseCommand):
 
@@ -62,8 +71,11 @@ class Gro(BaseCommand):
                                 sublist = "IKEA"
                             if sublist == "T&t" or sublist == "Tnt" or sublist == "TNT":
                                 sublist = "T&T"
-                            if sublist == "Ct":
+                            if sublist == "Ct" or sublist == "CT":
                                 sublist = "Canadian Tire"
+                            if sublist == "Ld" or sublist == "LD":
+                                sublist = "London Drugs"
+                            
             else:
                 sublist = ""
 
@@ -84,7 +96,10 @@ class Gro(BaseCommand):
             else:
                 groceries = {}
 
-            # will be called groceries
+ 
+
+
+ # will be called groceries
             if subcommand not in ["add", "remove", "clear", "list", "delete", "edit", "append"]:
                 await message.channel.send(f"Unrecognized subcommand: *{subcommand}*")
                 return
@@ -105,6 +120,16 @@ class Gro(BaseCommand):
                         for i in bulk:
                             groceries[sublist].append(i)
                         await message.channel.send(f"Added *{item}* to **{sublist}**.")
+
+                        msg = [ f":shopping_cart: **{sublist}**" ]
+                        items = []
+                        for index, i in enumerate(groceries[sublist]):
+                            idx = index+1
+                            items.append(f"\t{idx : >2}. {i.capitalize()}")
+                        msg.extend(items)
+                        text = '\n'.join(msg)
+                        await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+
                         jsonfile = json.dumps(groceries, indent = 4)
                         with open(savefile, "w") as f:
                             f.write(jsonfile)
@@ -130,6 +155,17 @@ class Gro(BaseCommand):
                                         old_item = groceries[sublist][index-1] 
                                         groceries[sublist][index-1] = new_item
                                         await message.channel.send(f"Edited *{old_item}* to *{new_item}* in **{sublist}**.")
+
+
+                                        msg = [ f":shopping_cart: **{sublist}**" ]
+                                        items = []
+                                        for index, i in enumerate(groceries[sublist]):
+                                            idx = index+1
+                                            items.append(f"\t{idx : >2}. {i.capitalize()}")
+                                        msg.extend(items)
+                                        text = '\n'.join(msg)
+                                        await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+
                                         jsonfile = json.dumps(groceries, indent = 4)
                                         with open(savefile, "w") as f:
                                             f.write(jsonfile)
@@ -138,6 +174,14 @@ class Gro(BaseCommand):
                                         new_item = " ".join(string[1:])
                                         groceries[sublist][index-1] = old_item + " " + new_item
                                         await message.channel.send(f"Appended *{new_item}* to *{old_item}* in **{sublist}**.")
+                                        msg = [ f":shopping_cart: **{sublist}**" ]
+                                        items = []
+                                        for index, i in enumerate(groceries[sublist]):
+                                            idx = index+1
+                                            items.append(f"\t{idx : >2}. {i.capitalize()}")
+                                        msg.extend(items)
+                                        text = '\n'.join(msg)
+                                        await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
                                         jsonfile = json.dumps(groceries, indent = 4)
                                         with open(savefile, "w") as f:
                                             f.write(jsonfile)
@@ -145,8 +189,6 @@ class Gro(BaseCommand):
                                 await message.channel.send(f"First item must be an index: {string[0]}")
                         else:
                             await message.channel.send(f"Missing item to {subcommand}.")
-                # TODO:
-                # !gro remove Costco 3 doesn't work?!
                 elif subcommand == "remove":
                     # if the sublist is not in the grocery keys, check if that arg is a number after splitting by commas
                     if sublist not in list(groceries.keys()):
@@ -195,6 +237,14 @@ class Gro(BaseCommand):
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
                             text = ", ".join(removed)
                             await message.channel.send(f"Removed *{text}* from **{sublist}**.")
+                            msg = [ f":shopping_cart: **{sublist}**" ]
+                            items = []
+                            for index, i in enumerate(groceries[sublist]):
+                                idx = index+1
+                                items.append(f"\t{idx : >2}. {i.capitalize()}")
+                            msg.extend(items)
+                            text = '\n'.join(msg)
+                            await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
                             jsonfile = json.dumps(groceries, indent = 4)
                             with open(savefile, "w") as f:
                                 f.write(jsonfile)
@@ -254,6 +304,12 @@ class Gro(BaseCommand):
                                     chunk = f":shopping_cart: **{i}**\n\t*No groceries.*"
                                     msg.append(chunk)
                             text = '\n\n'.join(msg)
+
+                            # change this to edit the last 'list' command made
+                            # shop_ch = client.get_channel(1032804856135688302)
+                            # msg_id = 1062250044360765499
+                            # pinned_msg = await shop_ch.fetch_message(msg_id)
+                            # await pinned_msg.edit(content=text) # why does the edit not show up until the next time !gro list is enacted?
                             await message.channel.send(text)
                         else:
                             await message.channel.send("You have no grocery lists.")
@@ -270,6 +326,10 @@ class Gro(BaseCommand):
                             items.append(f"\t{idx : >2}. {i.capitalize()}")
                         msg.extend(items)
                         text = '\n'.join(msg)
+                        # shop_ch = client.get_channel(1032804856135688302)
+                        # msg_id = 1062250044360765499
+                        # pinned_msg = await shop_ch.fetch_message(msg_id)
+                        # await pinned_msg.edit(content=text)
                         await message.channel.send(text) 
         else:
             if os.path.exists(savefile) == True:
