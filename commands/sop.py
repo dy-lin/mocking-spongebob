@@ -36,6 +36,8 @@ class Sop(BaseCommand):
 
         condition = df.Keywords.str.contains(arg)
         options = df[condition]
+
+        ## TODO: if options is empty then send a message and terminate
         # options = options.reset_index()
 
         degree_sign = u'\N{DEGREE SIGN}'
