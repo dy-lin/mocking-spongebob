@@ -48,7 +48,7 @@ class Gro(BaseCommand):
                     if os.path.exists(savefile) == True:
                         with open(savefile, "r") as f:
                             groceries = json.load(f)
-                    sublist = " ".join(params[1:]).replace('"','').title()
+                    sublist = " ".join(params[1:]).replace("“","").replace("”", "").replace('"','').title()
                     groceries[sublist] = []
 
                     jsonfile = json.dumps(groceries, indent = 4)
@@ -57,9 +57,9 @@ class Gro(BaseCommand):
                     await message.channel.send(f"Created new list: **{sublist}**")
                     return
                 else:
-                    if params[1].startswith('"'):
+                    if params[1].replace("“","").replace("”", "").startswith('"'):
                         temp = " ".join(params)
-                        sublist = temp.split('"')[1].title()
+                        sublist = temp.replace("“","").replace("”", "").split('"')[1].title()
                     else:
                         if subcommand == "list" and len(params[1:]) > 1:
                             sublist = " ".join(params[1:]).title()
@@ -83,9 +83,9 @@ class Gro(BaseCommand):
             # how do quotes work in discord bot input?
             # what is default type for params?
             if len(params) >= 3:
-                if params[1].startswith('"'): 
+                if params[1].replace("“","").replace("”", "").startswith('"'): 
                     temp = " ".join(params)
-                    item = " ".join([x.strip() for x in temp.split('"')[2:]]).lower()
+                    item = " ".join([x.strip() for x in temp.replace("“","").replace("”", "").split('"')[2:]]).lower()
                 else:
                     item = " ".join(params[2:]).lower()# .capitalize()
             else:
@@ -116,7 +116,7 @@ class Gro(BaseCommand):
                         groceries[sublist] = []
                 if subcommand == "add":
                     if item != "":
-                        bulk = item.split(", ")
+                        bulk = item.replace(", ", ",").split(",")
                         for i in bulk:
                             groceries[sublist].append(i)
                         await message.channel.send(f"Added *{item}* to **{sublist}**.")
@@ -192,7 +192,7 @@ class Gro(BaseCommand):
                 elif subcommand == "remove":
                     # if the sublist is not in the grocery keys, check if that arg is a number after splitting by commas
                     if sublist not in list(groceries.keys()):
-                        indices = sublist.split(", ")
+                        indices = sublist.replace(", ", ",").split(",")
                         try:
                             # if the first item can be converted into an int, means that it was intended as the indices number and the list is missing
                             x = int(indices[0])
@@ -208,7 +208,7 @@ class Gro(BaseCommand):
                         # the list is valid, and the item is slot is not empty
                         if item != "":
                             # assume that multiple indices are given
-                            indices = item.split(", ")
+                            indices = item.replace(", ", ",").split(",")
                             # create a copy of the grocery list to retain the indices
                             copy = groceries[sublist].copy()
                             removed = []
