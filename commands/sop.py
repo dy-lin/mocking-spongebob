@@ -45,8 +45,8 @@ class Sop(BaseCommand):
                 mode = row['Mode'].capitalize()
                 tmp = row['Time']
                 if isinstance(tmp, str):
-                    time_lower = round(int(row['Time'].split("-")[0]))
-                    time_upper = round(int(row['Time'].split("-")[-1]))
+                    time_lower = round(int(row['Time'].replace(" ", "").split("-")[0]))
+                    time_upper = round(int(row['Time'].replace(" ", "").split("-")[-1]))
                     if time_lower == time_upper:
                         time = time_lower
                     elif time_lower < time_upper:
