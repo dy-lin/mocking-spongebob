@@ -31,8 +31,16 @@ class Sop(BaseCommand):
         sheet_id = "1b489bA2PW1XVHAH8H6qcrcBzxBiOeGE8g7WWfe7ASGo"
         sheet_name = "Sheet1"
         url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-
-        df = pd.read_csv(url)
+        # https://towardsdatascience.com/all-the-pandas-read-csv-you-should-know-to-speed-up-your-data-analysis-1e16fe1039f3
+        df = pd.read_csv(url, dtype = {
+            'Food': str,
+            'Keywords': str,
+            'Mode': str,
+            'Time': str,
+            'Temperature': int,
+            'Preset': str,
+            'Notes': str
+            })
         condition = df.Keywords.str.contains(arg)
         options = df[condition]
         if options.shape[0] == 0:
@@ -42,21 +50,31 @@ class Sop(BaseCommand):
             msg = []
             for index, row in options.iterrows():
                 name = row['Food']
+                # print(name)
                 mode = row['Mode'].capitalize()
-                tmp = row['Time']
-                if isinstance(tmp, str):
-                    time_lower = round(int(row['Time'].replace(" ", "").split("-")[0]))
-                    time_upper = round(int(row['Time'].replace(" ", "").split("-")[-1]))
-                    if time_lower == time_upper:
-                        time = time_lower
-                    elif time_lower < time_upper:
-                        time = f"{time_lower}-{time_upper}"
-                    elif time_upper < time_lower:
-                        time = f"{time_upper}-{time_lower}"
-                elif isinstance(tmp, float):
-                    time = round(tmp)
+                # print(mode)
+                # tmp = row['Time']
+                # print(tmp)
+
+                # should always be str since the read_csv specifies dtype now but keeping legacy code
+                # if isinstance(tmp, str):
+                time_lower = round(int(row['Time'].replace(" ", "").split("-")[0]))
+                # print(time_lower)
+                time_upper = round(int(row['Time'].replace(" ", "").split("-")[-1]))
+                # print(time_upper)
+                if time_lower == time_upper:
+                    time = time_lower
+                elif time_lower < time_upper:
+                    time = f"{time_lower}-{time_upper}"
+                elif time_upper < time_lower:
+                    time = f"{time_upper}-{time_lower}"
+                # elif isinstance(tmp, float):
+                #     time = round(tmp)
+                # print(time)
                 temperature = round(row['Temperature'])
+                # print(temperature)
                 celsius = round((temperature-32)*5/9)
+                # print(celsius)
                 preset = row['Preset']
                 notes = row['Notes']
                 msg.append(f"**{name}:** {mode} at {temperature}{degree_sign}F ({celsius}{degree_sign}C) for {time} min.")
