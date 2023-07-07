@@ -126,7 +126,7 @@ class Gro(BaseCommand):
                         for index, i in enumerate(groceries[sublist]):
                             idx = index+1
                             # items.append(f"\t{idx : >2}. {i.capitalize()}")
-                            items.append(f"{idx : >2}. {i.capitalize()}")
+                            items.append(f"{idx}. {i.capitalize()}")
                         msg.extend(items)
                         text = '\n'.join(msg)
                         await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
@@ -163,7 +163,7 @@ class Gro(BaseCommand):
                                         for index, i in enumerate(groceries[sublist]):
                                             idx = index+1
                                             # items.append(f"\t{idx : >2}. {i.capitalize()}")
-                                            items.append(f"{idx : >2}. {i.capitalize()}")
+                                            items.append(f"{idx}. {i.capitalize()}")
                                         msg.extend(items)
                                         text = '\n'.join(msg)
                                         await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
@@ -181,7 +181,7 @@ class Gro(BaseCommand):
                                         for index, i in enumerate(groceries[sublist]):
                                             idx = index+1
                                             # items.append(f"\t{idx : >2}. {i.capitalize()}")
-                                            items.append(f"{idx : >2}. {i.capitalize()}")
+                                            items.append(f"{idx}. {i.capitalize()}")
                                         msg.extend(items)
                                         text = '\n'.join(msg)
                                         await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
@@ -240,12 +240,12 @@ class Gro(BaseCommand):
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
                             text = ", ".join(removed)
                             await message.channel.send(f"Removed *{text}* from **{sublist}**.")
-                            msg = [ f":shopping_cart: **{sublist}**" ]
+                            msg = [ f"# :shopping_cart: **{sublist}**" ]
                             items = []
                             for index, i in enumerate(groceries[sublist]):
                                 idx = index+1
                                 # items.append(f"\t{idx : >2}. {i.capitalize()}")
-                                items.append(f"{idx : >2}. {i.capitalize()}")
+                                items.append(f"{idx}. {i.capitalize()}")
                             msg.extend(items)
                             text = '\n'.join(msg)
                             await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
@@ -301,12 +301,12 @@ class Gro(BaseCommand):
                                     for index, j in enumerate(groceries[i]):
                                         idx = index+1
                                         # items.append(f"\t{idx : >2}. {j.capitalize()}")
-                                        items.append(f"{idx : >2}. {j.capitalize()}")
-                                    temp = [ f":shopping_cart: **{i}**" ] + items
+                                        items.append(f"{idx}. {j.capitalize()}")
+                                    temp = [ f"# :shopping_cart: **{i}**" ] + items
                                     chunk = '\n'.join(temp)
                                     msg.append(chunk)
                                 else:
-                                    chunk = f":shopping_cart: **{i}**\n\t*No groceries.*"
+                                    chunk = f"# :shopping_cart: **{i}**\n*No groceries.*"
                                     msg.append(chunk)
                             text = '\n\n'.join(msg)
 
@@ -329,7 +329,7 @@ class Gro(BaseCommand):
                         for index, i in enumerate(groceries[sublist]):
                             idx = index+1
                             # items.append(f"\t{idx : >2}. {i.capitalize()}")
-                            items.append(f"{idx : >2}. {i.capitalize()}")
+                            items.append(f"{idx}. {i.capitalize()}")
                         msg.extend(items)
                         text = '\n'.join(msg)
                         # shop_ch = client.get_channel(1032804856135688302)
@@ -349,7 +349,7 @@ class Gro(BaseCommand):
                             for index, j in enumerate(groceries[i]):
                                 idx = index+1
                                 # items.append(f"\t{idx : >2}. {j.capitalize()}")
-                                items.append(f"{idx : >2}. {j.capitalize()}")
+                                items.append(f"{idx}. {j.capitalize()}")
                             temp = [ f"# :shopping_cart: **{i}**" ] + items
                             chunk = '\n'.join(temp)
                             msg.append(chunk)

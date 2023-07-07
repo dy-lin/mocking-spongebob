@@ -28,7 +28,7 @@ class Eat(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
         # await message.channel.send(f"{os.getcwd()}")
-        savefile = "/Users/brian/mocking-spongebob/files/restaurants.json"
+        savefile = "/Users/diana/mocking-spongebob/files/restaurants.json"
         if len(params) > 0: 
             subcommand = params[0].lower()
 

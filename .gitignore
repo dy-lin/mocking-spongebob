@@ -112,4 +112,5 @@ files/
 temp/
 ACCESS_TOKEN
 .DS_Store
+run_spongebob.sh
 # End of https://www.gitignore.io/api/python
