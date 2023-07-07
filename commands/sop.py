@@ -4,7 +4,6 @@ from sqlite3 import Error
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
-
 # So, a command class named Random will generate a 'random' command
 class Sop(BaseCommand):
 
@@ -65,14 +64,13 @@ class Sop(BaseCommand):
             :return:
             """
             cur = conn.cursor()
-            cur.execute("SELECT * FROM sop WHERE food LIKE ?", (food,))
+            cur.execute(f"SELECT * FROM sop WHERE food LIKE '%{food}%'")
 
             rows = cur.fetchall()
             keyword = food.replace("'", "").replace("%","").capitalize()
              
             if len(rows) == 0:
-                # text = f"There is no {keyword} in our SOP."
-                text = food
+                text = f"There is no {keyword} in our SOP."
             else:
                 degree_sign = u'\N{DEGREE SIGN}'
                 msg = [ f"# :mag_right: Results for **{keyword}** :mag:" ]
@@ -106,5 +104,5 @@ class Sop(BaseCommand):
         conn = create_connection(database)
         with conn:
             
-            text = select_sop_by_food(conn, f"'%{arg}%'")
+            text = select_sop_by_food(conn, arg)
             await message.channel.send(text)
