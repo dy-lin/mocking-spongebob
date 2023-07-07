@@ -42,20 +42,19 @@ class Sop(BaseCommand):
 
             return conn 
 
-       #  def create_sop(conn, sop):
-       #      """
-       #      Create a new sop into the sop table
-       #      :param conn:
-       #      :param sop:
-       #      :return: sop id
-       #      """
-       #      sql = ''' INSERT INTO sop(food,mode,time,temperature)
-       #                VALUES(?,?,?,?) '''
-       #      cur = conn.cursor()
-       #      cur.execute(sql, sop)
-       #      conn.commit()
-       #      return cur.lastrowid
-
+        def create_sop(conn, sop):
+           """
+           Create a new sop into the sop table
+           :param conn:
+           :param sop:
+           :return: sop id
+           """
+           sql = ''' INSERT INTO sop(food,mode,time,temperature)
+           VALUES(?,?,?,?) '''
+           cur = conn.cursor()
+           cur.execute(sql, sop)
+           conn.commit()
+           return cur.lastrowid
         def select_sop_by_food(conn, food):
             """
             Query sop by food
@@ -67,13 +66,13 @@ class Sop(BaseCommand):
             cur.execute(f"SELECT * FROM sop WHERE food LIKE '%{food}%'")
 
             rows = cur.fetchall()
-            keyword = food.replace("'", "").replace("%","").capitalize()
+            keyword = food.replace("'", "").replace("%","").title()
              
             if len(rows) == 0:
                 text = f"There is no {keyword} in our SOP."
             else:
                 degree_sign = u'\N{DEGREE SIGN}'
-                msg = [ f"# :mag_right: Results for **{keyword}** :mag:" ]
+                msg = [ f"# :mag_right: Results for {keyword} :mag:" ]
 
                 for row in rows:
                     id,name,mode,time,temp = row
@@ -96,22 +95,23 @@ class Sop(BaseCommand):
 
                 text = '\n'.join(msg)
             return(text)
-       #  create = False 
-       #  if params[0].lower() == "add":
-       #      arg = params[1:]
-       #      create = True
-       #  else:
-        arg = " ".join(params)
+        if params[0].lower() == "add":
+            arg = params[-3:]
+            name = " ".join(params[1:len(params)-3]).title()
+            create = True
+        else:
+            arg = " ".join(params)
 
         database = "/Users/diana/mocking-spongebob/files/sqlite.db"
 
         conn = create_connection(database)
         with conn:
-       #      if create == True:
-       #          create_sop(arg[0].title(), arg[1].capitalize(), str(arg[2]), int(arg[3]))
-       #          await message.channel.send(f"SOP for {arg[0].title()} added to the database.")
-       #          text = select_sop_by_food(conn, arg[0])
-       #          await message.channel.send(text)
-       #      else:
-            text = select_sop_by_food(conn, arg)
-            await message.channel.send(text)
+            if params[0].lower() == "add":
+               sop = (name, arg[0].capitalize(), str(arg[1]), int(arg[2]))
+               create_sop(conn, sop)
+               await message.channel.send(f"SOP for {name} added to the database.")
+               text = select_sop_by_food(conn, name)
+               await message.channel.send(text, delete_after = 5)
+            else:
+                text = select_sop_by_food(conn, arg)
+                await message.channel.send(text)
