@@ -43,19 +43,19 @@ class Sop(BaseCommand):
 
             return conn 
 
-        def create_sop(conn, sop):
-            """
-            Create a new sop into the sop table
-            :param conn:
-            :param sop:
-            :return: sop id
-            """
-            sql = ''' INSERT INTO sop(food,mode,time,temperature)
-                      VALUES(?,?,?,?) '''
-            cur = conn.cursor()
-            cur.execute(sql, sop)
-            conn.commit()
-            return cur.lastrowid
+        # def create_sop(conn, sop):
+        #     """
+        #     Create a new sop into the sop table
+        #     :param conn:
+        #     :param sop:
+        #     :return: sop id
+        #     """
+        #     sql = ''' INSERT INTO sop(food,mode,time,temperature)
+        #               VALUES(?,?,?,?) '''
+        #     cur = conn.cursor()
+        #     cur.execute(sql, sop)
+        #     conn.commit()
+        #     return cur.lastrowid
 
         def select_sop_by_food(conn, food):
             """
@@ -69,9 +69,10 @@ class Sop(BaseCommand):
 
             rows = cur.fetchall()
             keyword = food.replace("'", "").replace("%","").capitalize()
-
+             
             if len(rows) == 0:
-                await message.channel.send(f"There is no {keyword} in our SOP.")
+                # text = f"There is no {keyword} in our SOP."
+                text = food
             else:
                 degree_sign = u'\N{DEGREE SIGN}'
                 msg = [ f"# :mag_right: Results for **{keyword}** :mag:" ]
@@ -96,12 +97,14 @@ class Sop(BaseCommand):
                     msg.append(f"- **{name}:** {mode} at {temperature}{degree_sign}F ({celsius}{degree_sign}C) for {time} min.")
 
                 text = '\n'.join(msg)
-                await message.channel.send(text)
+            return(text)
 
         arg = " ".join(params)
 
         database = "/Users/diana/mocking-spongebob/files/sqlite.db"
-        conn = create_connection(database)
 
+        conn = create_connection(database)
         with conn:
-            select_sop_by_food(conn, f'%arg%')
+            
+            text = select_sop_by_food(conn, f"'%{arg}%'")
+            await message.channel.send(text)
