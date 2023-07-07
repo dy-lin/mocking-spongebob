@@ -27,56 +27,81 @@ class Sop(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
 
-        arg = " ".join(params).lower()
-        sheet_id = "1b489bA2PW1XVHAH8H6qcrcBzxBiOeGE8g7WWfe7ASGo"
-        sheet_name = "Sheet1"
-        url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-        # https://towardsdatascience.com/all-the-pandas-read-csv-you-should-know-to-speed-up-your-data-analysis-1e16fe1039f3
-        df = pd.read_csv(url, dtype = {
-            'Food': str,
-            'Keywords': str,
-            'Mode': str,
-            'Time': str,
-            'Temperature': int,
-            'Preset': str,
-            'Notes': str
-            })
-        condition = df.Keywords.str.contains(arg)
-        options = df[condition]
-        if options.shape[0] == 0:
-            await message.channel.send(f"There is no {arg} in our SOP.")
-        else:
-            degree_sign = u'\N{DEGREE SIGN}'
-            msg = []
-            for index, row in options.iterrows():
-                name = row['Food']
-                # print(name)
-                mode = row['Mode'].capitalize()
-                # print(mode)
-                # tmp = row['Time']
-                # print(tmp)
 
-                # should always be str since the read_csv specifies dtype now but keeping legacy code
-                # if isinstance(tmp, str):
-                time_lower = round(int(row['Time'].replace(" ", "").split("-")[0]))
-                # print(time_lower)
-                time_upper = round(int(row['Time'].replace(" ", "").split("-")[-1]))
-                # print(time_upper)
-                if time_lower == time_upper:
-                    time = time_lower
-                elif time_lower < time_upper:
-                    time = f"{time_lower}-{time_upper}"
-                elif time_upper < time_lower:
-                    time = f"{time_upper}-{time_lower}"
-                # elif isinstance(tmp, float):
-                #     time = round(tmp)
-                # print(time)
-                temperature = round(row['Temperature'])
-                # print(temperature)
-                celsius = round((temperature-32)*5/9)
-                # print(celsius)
-                preset = row['Preset']
-                notes = row['Notes']
-                msg.append(f"**{name}:** {mode} at {temperature}{degree_sign}F ({celsius}{degree_sign}C) for {time} min.")
-            text = '\n'.join(msg)
-            await message.channel.send(text)
+        def create_connection(db_file):
+            """ create a database connection to the SQLite database
+                specified by db_file
+            :param db_file: database file
+            :return: Connection object or None
+            """
+            conn = None
+            try:
+                conn = sqlite3.connect(db_file)
+                return conn
+            except Error as e:
+                print(e)
+
+            return conn 
+
+        def create_sop(conn, sop):
+            """
+            Create a new sop into the sop table
+            :param conn:
+            :param sop:
+            :return: sop id
+            """
+            sql = ''' INSERT INTO sop(food,mode,time,temperature)
+                      VALUES(?,?,?,?) '''
+            cur = conn.cursor()
+            cur.execute(sql, sop)
+            conn.commit()
+            return cur.lastrowid
+
+        def select_sop_by_food(conn, food):
+            """
+            Query sop by food
+            :param conn: the Connection object
+            :param food:
+            :return:
+            """
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM sop WHERE food LIKE ?", (food,))
+
+            rows = cur.fetchall()
+            keyword = food.replace("'", "").replace("%","").capitalize()
+
+            if len(rows) == 0:
+                await message.channel.send(f"There is no {keyword} in our SOP.")
+            else:
+                degree_sign = u'\N{DEGREE SIGN}'
+                msg = [ f"# :mag_right: Results for **{keyword}** :mag:" ]
+
+                for row in rows:
+                    id,name,mode,time,temp = row
+                    name = name.title()
+                    mode = mode.capitalize()
+                    time_lower = round(int(time.replace(" ", "").split("-")[0]))
+                    time_upper = round(int(time.replace(" ", "").split("-")[-1]))
+
+                    if time_lower == time_upper:
+                        time = time_lower
+                    elif time_lower < time_upper:
+                        time = f"{time_lower}-{time_upper}"
+                    elif time_upper < time_lower:
+                        time = f"{time_upper}-{time_lower}"
+
+                    temperature = round(temp)
+                    celsius = round((temperature-32)*5/9)
+
+                    msg.append(f"- **{name}:** {mode} at {temperature}{degree_sign}F ({celsius}{degree_sign}C) for {time} min.")
+
+                text = '\n'.join(msg)
+                await message.channel.send(text)
+
+        arg = " ".join(params)
+
+        database = "/Users/diana/mocking-spongebob/files/sqlite.db"
+        conn = create_connection(database)
+
+        with conn:
+            select_sop_by_food(conn, f'%arg%')
