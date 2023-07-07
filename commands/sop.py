@@ -42,19 +42,19 @@ class Sop(BaseCommand):
 
             return conn 
 
-        # def create_sop(conn, sop):
-        #     """
-        #     Create a new sop into the sop table
-        #     :param conn:
-        #     :param sop:
-        #     :return: sop id
-        #     """
-        #     sql = ''' INSERT INTO sop(food,mode,time,temperature)
-        #               VALUES(?,?,?,?) '''
-        #     cur = conn.cursor()
-        #     cur.execute(sql, sop)
-        #     conn.commit()
-        #     return cur.lastrowid
+       #  def create_sop(conn, sop):
+       #      """
+       #      Create a new sop into the sop table
+       #      :param conn:
+       #      :param sop:
+       #      :return: sop id
+       #      """
+       #      sql = ''' INSERT INTO sop(food,mode,time,temperature)
+       #                VALUES(?,?,?,?) '''
+       #      cur = conn.cursor()
+       #      cur.execute(sql, sop)
+       #      conn.commit()
+       #      return cur.lastrowid
 
         def select_sop_by_food(conn, food):
             """
@@ -96,13 +96,22 @@ class Sop(BaseCommand):
 
                 text = '\n'.join(msg)
             return(text)
-
+       #  create = False 
+       #  if params[0].lower() == "add":
+       #      arg = params[1:]
+       #      create = True
+       #  else:
         arg = " ".join(params)
 
         database = "/Users/diana/mocking-spongebob/files/sqlite.db"
 
         conn = create_connection(database)
         with conn:
-            
+       #      if create == True:
+       #          create_sop(arg[0].title(), arg[1].capitalize(), str(arg[2]), int(arg[3]))
+       #          await message.channel.send(f"SOP for {arg[0].title()} added to the database.")
+       #          text = select_sop_by_food(conn, arg[0])
+       #          await message.channel.send(text)
+       #      else:
             text = select_sop_by_food(conn, arg)
             await message.channel.send(text)
