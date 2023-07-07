@@ -1,6 +1,6 @@
 from commands.base_command  import BaseCommand
-import pandas as pd
-
+import sqlite3
+from sqlite3 import Error
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
