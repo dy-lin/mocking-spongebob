@@ -49,6 +49,12 @@ class Sop(BaseCommand):
            :param sop:
            :return: sop id
            """
+
+           # TODO
+           # add support for different units of time
+           # ends in m means minutes
+           # ends in h means hours, convert this to minutes for storage in database
+           # ends in number, assume minutes unless the mode is sous vide?
            sql = ''' INSERT INTO sop(food,mode,time,temperature)
            VALUES(?,?,?,?) '''
            cur = conn.cursor()
@@ -98,7 +104,7 @@ class Sop(BaseCommand):
         if params[0].lower() == "add":
             arg = params[-3:]
             name = " ".join(params[1:len(params)-3]).title()
-            create = True
+            # TODO: currently mode is inferred positionally but sous vide is two words so its incompatible
         else:
             arg = " ".join(params)
 

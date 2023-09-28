@@ -5,6 +5,8 @@ import os
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
+# TODO
+# get a 'bot is typing' message
 
 # So, a command class named Random will generate a 'random' command
 class Mock(BaseCommand):
