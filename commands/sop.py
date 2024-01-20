@@ -108,7 +108,7 @@ class Sop(BaseCommand):
         else:
             arg = " ".join(params)
 
-        database = "/Users/diana/mocking-spongebob/files/sqlite.db"
+        database = "/Users/dianalin/mocking-spongebob/files/sqlite.db"
 
         conn = create_connection(database)
         with conn:

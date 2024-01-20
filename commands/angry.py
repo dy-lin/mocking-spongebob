@@ -25,7 +25,7 @@ class Angry(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
-        filename = "/Users/diana/mocking-spongebob/files/angry.txt"
+        filename = "/Users/dianalin/mocking-spongebob/files/angry.txt"
 
         infile = open(filename, 'r')
 
