@@ -61,8 +61,8 @@ def main():
             try:
                 await message_handler.handle_command(cmd_split[0].lower(), 
                                       cmd_split[1:], message, client)
-            except:
-                print("Error while handling message", flush=True)
+            except Exception as error:
+                print("Error while handling message", error, flush=True)
                 raise
 
     @client.event
