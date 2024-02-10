@@ -79,13 +79,16 @@ class Sop(BaseCommand):
             else:
                 degree_sign = u'\N{DEGREE SIGN}'
                 msg = [ f"# :mag_right: Results for {keyword} :mag:" ]
-
                 for row in rows:
                     id,name,mode,time,temp = row
                     name = name.title()
                     mode = mode.capitalize()
-                    time_lower = round(int(time.replace(" ", "").split("-")[0]))
-                    time_upper = round(int(time.replace(" ", "").split("-")[-1]))
+                    try:
+                        time_lower = int(time.replace(" ", "").split("-")[0])
+                        time_upper = int(time.replace(" ", "").split("-")[-1])
+                    except ValueError:
+                        time_lower = float(time.replace(" ", "").split("-")[0])
+                        time_upper = float(time.replace(" ", "").split("-")[-1])
 
                     if time_lower == time_upper:
                         time = time_lower
@@ -93,7 +96,6 @@ class Sop(BaseCommand):
                         time = f"{time_lower}-{time_upper}"
                     elif time_upper < time_lower:
                         time = f"{time_upper}-{time_lower}"
-
                     temperature = round(temp)
                     celsius = round((temperature-32)*5/9)
 
