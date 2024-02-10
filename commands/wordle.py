@@ -38,6 +38,6 @@ class Wordle(BaseCommand):
             msg = answer + "\n\n\n"
 
             for index in range(len(wordle)-1):
-                msg = msg + f"**Hint #{index+1}:** ||{wordle[index]}||\n"
+                msg = msg + f"- **Hint #{index+1}:** ||{wordle[index]}||\n"
             
         await message.channel.send(msg)
