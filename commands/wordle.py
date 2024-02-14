@@ -33,7 +33,7 @@ class Wordle(BaseCommand):
         else:
             msg = ""
             answer = "# **Answer:**"
-            for letter in wordle[3]:
+            for letter in wordle[len(wordle)-1]:
                 answer = answer + f"   ||{letter}||"
             msg = answer + "\n\n\n"
 
