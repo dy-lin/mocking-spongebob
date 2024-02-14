@@ -16,8 +16,7 @@ today=$(date '+%B %-d, %Y')
 bee_date=$(grep 'Spelling Bee for' $html | grep -o '>[A-z0-9, ]\+<' | tail -n1 | tr -d '>' | tr -d '<')
 
 # grab panagrams
-panagrams=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g')
-
+panagrams=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g' | sed 's/^\s\+//g' | sed 's/\s\+$//g')
 
 if [[ "$today" != "$bee_date" ]]; then
 	echo "NULL"
