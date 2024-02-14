@@ -31,7 +31,6 @@ class Conn(BaseCommand):
             msg = f"Today's date does not match the Connections date."
             await message.channel.send(msg)
         else:
-            print(cxn)
             for i in cxn:
                 await message.channel.send(i)
 
