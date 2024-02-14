@@ -38,6 +38,8 @@ class Bee(BaseCommand):
                 answer = "# -"
                 for letter in word:
                     answer = answer + f"   ||{letter}||"
+                if len(word) == 7:
+                    answer = answer + f"   (perfect)"
                 msg = msg + answer +  "\n"
 
         await message.channel.send(msg)
