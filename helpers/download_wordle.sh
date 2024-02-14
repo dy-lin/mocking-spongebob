@@ -17,7 +17,7 @@ fi
 today=$(date '+%B-%-d-%Y')
 
 # grab panagrams
-hints=$(grep 'subtle hint'  $html | grep -o "<p>[A-z.<>/' ]\+</p>" | gsed 's|<[pem/]\+>||g')
+hints=$(grep 'subtle hint'  $html | grep -o "<p>[A-z.,\!<>/' ]\+</p>" | gsed 's|<[pem/]\+>||g')
 soln=$(grep 'solution'  $html | tail -n1| grep -o '<strong>[A-Z.]\+</strong>' | gsed 's|</\?strong>||g' | tr -d '.' )
 
 if [[ "$today" != "$url_date" ]]; then
