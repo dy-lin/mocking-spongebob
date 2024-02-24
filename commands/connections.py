@@ -32,5 +32,6 @@ class Conn(BaseCommand):
             await message.channel.send(msg)
         else:
             for i in cxn:
-                await message.channel.send(i)
+                if i != "":
+                    await message.channel.send(i)
 
