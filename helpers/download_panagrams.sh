@@ -21,7 +21,12 @@ today=$(date '+%B %-d, %Y')
 bee_date=$(grep 'Spelling Bee for' $html | grep -o '>[A-z0-9, ]\+<' | tail -n1 | tr -d '>' | tr -d '<')
 
 if [[ "$#" -eq 1 ]]; then
-	soln=$(grep "sbsolver.com/h/" $html | grep -o "/[a-z]\+\"" | tr -d / | tr -d '"' | tr '[:lower:]' '[:upper:]' | grep "^$1")
+	if [[ "$1" == -* ]]; then
+		end=$(echo "$1" | tr -d '-')
+		soln=$(grep "sbsolver.com/h/" $html | grep -o "/[a-z]\+\"" | tr -d / | tr -d '"' | tr '[:lower:]' '[:upper:]' | grep "${end}$")
+	else
+		soln=$(grep "sbsolver.com/h/" $html | grep -o "/[a-z]\+\"" | tr -d / | tr -d '"' | tr '[:lower:]' '[:upper:]' | grep "^$1")
+	fi
 else
 	soln=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g' | sed 's/^\s\+//g' | sed 's/\s\+$//g')
 fi

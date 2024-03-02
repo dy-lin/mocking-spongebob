@@ -26,7 +26,13 @@ class Bee(BaseCommand):
         # 'client' is the bot Client object
         if len(params) != 0:
             for start in params:
-                hint = start.upper()
+                if start.startswith("-"):
+                    hint = start.upper()[1:]
+                    end = True
+                else:
+                    hint = start.upper()
+                    end = False
+
                 words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {hint}']).split('\n')
 
                 if words == 'NULL':
@@ -39,15 +45,18 @@ class Bee(BaseCommand):
 
                     for word in words:
                         answer = "# -"
-
-                        # the first two letters are already known by prompt
-                        i = 0
                         for letter in word:
                             # do not spoiler tag the first two letters
-                            if i < len(hint):
-                                answer = answer + f"   {letter}"
+                            if end == True:
+                                if i >= len(word)-len(hint):
+                                    answer = answer + f"   {letter}"
+                                else:
+                                    answer = answer + f"   ||{letter}||"
                             else:
-                                answer = answer + f"   ||{letter}||"
+                                if i < len(hint):
+                                    answer = answer + f"   {letter}"
+                                else:
+                                    answer = answer + f"   ||{letter}||"
                             i = i + 1
                         msg = msg + answer +  "\n"
                 await message.channel.send(msg)
