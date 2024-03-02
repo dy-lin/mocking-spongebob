@@ -25,21 +25,38 @@ class Bee(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
+        if len(params) == 1:
+            hint = params[0].upper()
+            words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {hint}']).split('\n')
 
-        panagrams = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh']).split(' ')
+            if words == 'NULL':
+                msg = f"Today's date does not match the Spelling Bee date."
+            elif len(words) == 1 and words[0] == '':
+                msg = f"There are no words that start with {hint}."
+            else:
+                num_words = len(words)
+                msg = f"There are {num_words} words starting with {hint}:\n"
 
-        if panagrams == 'NULL':
-            msg = f"Today's date does not match the Spelling Bee date."
+                for word in words:
+                    answer = "# -"
+                    for letter in word:
+                        answer = answer + f"   ||{letter}||"
+                    msg = msg + answer +  "\n"
         else:
-            num_panagrams = len(panagrams)
-            msg = f"There are {num_panagrams} panagrams:\n"
+            panagrams = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh']).split(' ')
 
-            for word in panagrams:
-                answer = "# -"
-                for letter in word:
-                    answer = answer + f"   ||{letter}||"
-                if len(word) == 7:
-                    answer = answer + f"   (perfect)"
-                msg = msg + answer +  "\n"
+            if panagrams == 'NULL':
+                msg = f"Today's date does not match the Spelling Bee date."
+            else:
+                num_panagrams = len(panagrams)
+                msg = f"There are {num_panagrams} panagrams:\n"
+
+                for word in panagrams:
+                    answer = "# -"
+                    for letter in word:
+                        answer = answer + f"   ||{letter}||"
+                    if len(word) == 7:
+                        answer = answer + f"   (perfect)"
+                    msg = msg + answer +  "\n"
 
         await message.channel.send(msg)

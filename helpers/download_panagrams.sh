@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+if [[ "$#" -eq 0 ]]; then
+	echo "Missing arguments."
+	exit 1
+fi
+
 # grab the html
 html=/Users/dianalin/mocking-spongebob/files/panagrams.html
 date_short=$(date '+%b%d')
@@ -15,11 +20,14 @@ fi
 today=$(date '+%B %-d, %Y')
 bee_date=$(grep 'Spelling Bee for' $html | grep -o '>[A-z0-9, ]\+<' | tail -n1 | tr -d '>' | tr -d '<')
 
-# grab panagrams
-panagrams=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g' | sed 's/^\s\+//g' | sed 's/\s\+$//g')
+if [[ "$#" -eq 1 ]]; then
+	soln=$(grep "sbsolver.com/h/" ../files/panagrams.html | grep -o "/[a-z]\+\"" | tr -d / | tr -d '"' | tr '[:lower:]' '[:upper:]' | grep "^$1")
+else
+	soln=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g' | sed 's/^\s\+//g' | sed 's/\s\+$//g')
+fi
 
 if [[ "$today" != "$bee_date" ]]; then
 	echo "NULL"
 else
-	echo "$panagrams"
+	echo "$soln"
 fi
