@@ -1,8 +1,7 @@
 from commands.base_command  import BaseCommand
 import subprocess
 # Your friendly example event
-# Keep in mind that the command name will be derived from the class name
-# but in lowercase
+# Keep in mind that the command name will be derived from the class name # but in lowercase
 
 # So, a command class named Random will generate a 'random' command
 class Bee(BaseCommand):
@@ -45,7 +44,7 @@ class Bee(BaseCommand):
                         i = 0
                         for letter in word:
                             # do not spoiler tag the first two letters
-                            if i < 2:
+                            if i < len(hint):
                                 answer = answer + f"   {letter}"
                             else:
                                 answer = answer + f"   ||{letter}||"
