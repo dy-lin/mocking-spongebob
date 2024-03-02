@@ -27,28 +27,33 @@ class Bee(BaseCommand):
         if len(params) != 0:
             for start in params:
                 if start.startswith("-"):
-                    hint = start.upper()[1:]
                     end = True
                 else:
-                    hint = start.upper()
                     end = False
 
+                hint = start.upper()
                 words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {hint}']).split('\n')
 
                 if words == 'NULL':
                     msg = f"Today's date does not match the Spelling Bee date."
-                elif len(words) == 1 and words[0] == '':
+                elif len(words) == 1 and words[0] == '' and end == False:
                     msg = f"There are no words that start with **{hint}**."
+                elif len(words) == 1 and words[0] == '' and end == True:
+                    msg = f"There are no words that end in **{hint[1:]}**."
                 else:
                     num_words = len(words)
-                    msg = f"There are {num_words} words starting with **{hint}**:\n"
+                    if end == True:
+                        msg = f"There are {num_words} words ending in **{hint[1:]}**:\n"
+                    else:
+                        msg = f"There are {num_words} words starting with **{hint}**:\n"
 
                     for word in words:
                         answer = "# -"
+                        i = 0
                         for letter in word:
                             # do not spoiler tag the first two letters
                             if end == True:
-                                if i >= len(word)-len(hint):
+                                if i >= len(word)-len(hint[1:]):
                                     answer = answer + f"   {letter}"
                                 else:
                                     answer = answer + f"   ||{letter}||"
