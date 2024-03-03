@@ -1,11 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-if [[ "$#" -eq 0 ]]; then
-	echo "Missing arguments."
-	exit 1
-fi
-
 # grab the html
 html=/Users/dianalin/mocking-spongebob/files/panagrams.html
 date_short=$(date '+%b%d')
