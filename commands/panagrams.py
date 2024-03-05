@@ -66,7 +66,7 @@ class Bee(BaseCommand):
                         msg = msg + answer +  "\n"
                 await message.channel.send(msg)
         else:
-            panagrams = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh']).split(' ')
+            panagrams = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh']).split('\n')
 
             if panagrams == 'NULL':
                 msg = f"Today's date does not match the Spelling Bee date."

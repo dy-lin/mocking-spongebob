@@ -23,7 +23,7 @@ if [[ "$#" -eq 1 ]]; then
 		soln=$(grep "sbsolver.com/h/" $html | grep -o "/[a-z]\+\"" | tr -d / | tr -d '"' | tr '[:lower:]' '[:upper:]' | grep "^$1")
 	fi
 else
-	soln=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g' | sed 's/^\s\+//g' | sed 's/\s\+$//g')
+	soln=$(grep -m3 "<b>" $html | tail -n1 | grep -o '>[A-Z, ]\+<' | tr -d '>' | tr -d '<' | sed 's/, / /g' | sed 's/^\s\+//g' | sed 's/\s\+$//g' | tr ' ' $'\n' | sed '/^$/d')
 fi
 
 if [[ "$today" != "$bee_date" ]]; then
