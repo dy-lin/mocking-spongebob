@@ -1,5 +1,6 @@
 from commands.base_command  import BaseCommand
 import subprocess
+import re
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name # but in lowercase
 
@@ -26,6 +27,7 @@ class Bee(BaseCommand):
         # 'client' is the bot Client object
         if len(params) != 0:
             for start in params:
+                start = re.sub("-[0-9]+$", "", start) # add suport for copying and pasting lines from built in hints
                 if start.startswith("-"):
                     end = True
                 else:
@@ -39,13 +41,13 @@ class Bee(BaseCommand):
                 elif len(words) == 1 and words[0] == '' and end == False:
                     msg = f"There are no words that start with **{hint}**."
                 elif len(words) == 1 and words[0] == '' and end == True:
-                    msg = f"There are no words that end in **{hint[1:]}**."
+                    msg = f"There are no words that end in **{hint}**."
                 else:
                     num_words = len(words)
                     if end == True:
-                        msg = f"There are {num_words} words ending in **{hint[1:]}**:\n"
+                        msg = f"There are {num_words} word(s) ending in **{hint[1:]}**:\n"
                     else:
-                        msg = f"There are {num_words} words starting with **{hint}**:\n"
+                        msg = f"There are {num_words} word(s) starting with **{hint}**:\n"
 
                     for word in words:
                         answer = "# -"
@@ -53,12 +55,12 @@ class Bee(BaseCommand):
                         for letter in word:
                             # do not spoiler tag the first two letters
                             if end == True:
-                                if i >= len(word)-len(hint[1:]):
+                                if i >= len(word)-len(hint): # use len(hint[1:]) if only revealing hint instead of hint + 1 letter
                                     answer = answer + f"   {letter}"
                                 else:
                                     answer = answer + f"   ||{letter}||"
                             else:
-                                if i < len(hint):
+                                if i <= len(hint): # use < if only revealing hint instead of hint + 1 letter
                                     answer = answer + f"   {letter}"
                                 else:
                                     answer = answer + f"   ||{letter}||"
@@ -72,7 +74,7 @@ class Bee(BaseCommand):
                 msg = f"Today's date does not match the Spelling Bee date."
             else:
                 num_panagrams = len(panagrams)
-                msg = f"There are {num_panagrams} panagrams:\n"
+                msg = f"There are {num_panagrams} panagram(s):\n"
 
                 for word in panagrams:
                     answer = "# -"
