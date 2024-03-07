@@ -55,15 +55,27 @@ class Bee(BaseCommand):
                         for letter in word:
                             # do not spoiler tag the first two letters
                             if end == True:
-                                if i >= len(word)-len(hint): # use len(hint[1:]) if only revealing hint instead of hint + 1 letter
-                                    answer = answer + f"   {letter}"
+                                if len(word) == len(hint):
+                                    if i >= len(word)-len(hint[1:]): # use len(hint[1:]) if only revealing hint instead of hint + 1 letter
+                                        answer = answer + f"   {letter}"
+                                    else:
+                                        answer = answer + f"   ||{letter}||"
                                 else:
-                                    answer = answer + f"   ||{letter}||"
+                                    if i >= len(word)-len(hint): # use len(hint[1:]) if only revealing hint instead of hint + 1 letter
+                                        answer = answer + f"   {letter}"
+                                    else:
+                                        answer = answer + f"   ||{letter}||"
                             else:
-                                if i <= len(hint): # use < if only revealing hint instead of hint + 1 letter
-                                    answer = answer + f"   {letter}"
+                                if len(word) == len(hint)+1:
+                                    if i < len(hint): # use < if only revealing hint instead of hint + 1 letter
+                                        answer = answer + f"   {letter}"
+                                    else:
+                                        answer = answer + f"   ||{letter}||"
                                 else:
-                                    answer = answer + f"   ||{letter}||"
+                                    if i <= len(hint): # use < if only revealing hint instead of hint + 1 letter
+                                        answer = answer + f"   {letter}"
+                                    else:
+                                        answer = answer + f"   ||{letter}||"
                             i = i + 1
                         msg = msg + answer +  "\n"
                 await message.channel.send(msg)
