@@ -1,5 +1,6 @@
 from commands.base_command  import BaseCommand
 import subprocess
+from datetime import date
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
@@ -27,6 +28,8 @@ class Conn(BaseCommand):
 
         cxn = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_connections.sh']).split("\n\n")
 
+        today = date.today().strftime("%A, %B %d, %Y")
+        await message.channel.send(f"# {today}")
         if cxn == 'NULL':
             msg = f"Today's date does not match the Connections date."
             await message.channel.send(msg)

@@ -1,6 +1,7 @@
 from commands.base_command  import BaseCommand
 import subprocess
 import re
+from datetime import date
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name # but in lowercase
 
@@ -25,6 +26,8 @@ class Bee(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
+        today = date.today().strftime("%A, %B %d, %Y")
+        await message.channel.send(f"# {today}")
         if len(params) != 0:
             for start in params:
                 start = re.sub("-[0-9]+$", "", start) # add suport for copying and pasting lines from built in hints
@@ -35,7 +38,6 @@ class Bee(BaseCommand):
 
                 hint = start.upper()
                 words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {hint}']).split('\n')
-
                 if words == 'NULL':
                     msg = f"Today's date does not match the Spelling Bee date."
                 elif len(words) == 1 and words[0] == '' and end == False:
