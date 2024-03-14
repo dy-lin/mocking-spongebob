@@ -26,7 +26,6 @@ class Gro(BaseCommand):
         # If no params are expected, leave this list empty or set it to None
         params = []
         super().__init__(description, params)
-
     # Override the handle() method
     # It will be called every time the command is received
     async def handle(self, params, message, client):
@@ -48,7 +47,7 @@ class Gro(BaseCommand):
                     if os.path.exists(savefile) == True:
                         with open(savefile, "r") as f:
                             groceries = json.load(f)
-                    sublist = " ".join(params[1:]).replace("“","").replace("”", "").replace('"','').title()
+                    sublist = " ".join(params[1:]).replace("“","").replace("”", "").replace('"','').title().replace("'S", "'s").replace("Usa","USA")
                     groceries[sublist] = []
 
                     jsonfile = json.dumps(groceries, indent = 4)
@@ -59,10 +58,11 @@ class Gro(BaseCommand):
                 else:
                     if params[1].replace("“","").replace("”", "").startswith('"'):
                         temp = " ".join(params)
-                        sublist = temp.replace("“","").replace("”", "").split('"')[1].title()
+                        sublist = temp.replace("“","").replace("”", "").split('"')[1].title().replace("'S", "'s").replace("Usa","USA")
                     else:
                         if subcommand == "list" and len(params[1:]) > 1:
-                            sublist = " ".join(params[1:]).title()
+                            sublist = " ".join(params[1:]).title().replace("'S", "'s").replace("Usa","USA")
+
                         else:
                             sublist = params[1] # how to account for two words?
                             if sublist != sublist.upper() and sublist != "all":
