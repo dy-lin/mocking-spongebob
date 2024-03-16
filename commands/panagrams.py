@@ -1,7 +1,7 @@
 from commands.base_command  import BaseCommand
 import subprocess
 import re
-from datetime import date
+import datetime
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name # but in lowercase
 
@@ -26,8 +26,22 @@ class Bee(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
-        today = date.today().strftime("%A, %B %d, %Y")
-        await message.channel.send(f"# {today}")
+        if len(params) != 0 and params[0].startswith("2"):
+            try:
+                tmp = datetime.datetime.strptime(params[0], "%Y-%m-%d")
+                today_unformatted = tmp.strftime("%Y-%m-%d")
+                today = tmp.strftime("%A, %B %d, %Y")
+                params = params[1:len(params)]
+            except:
+                await message.channel.send("Date must be YYYY-MM-DD.")
+                return
+
+        else:
+            today_unformatted = datetime.date.today().strftime("%Y-%m-%d")
+            today = datetime.date.today().strftime("%A, %B %d, %Y")
+
+        # await message.channel.send(f"# {today}")
+        msg = f"# {today}"
         if len(params) != 0:
             for start in params:
                 start = re.sub("-[0-9]+$", "", start) # add suport for copying and pasting lines from built in hints
@@ -37,19 +51,19 @@ class Bee(BaseCommand):
                     end = False
 
                 hint = start.upper()
-                words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {hint}']).split('\n')
+                words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted} {hint}']).split('\n')
                 if words == 'NULL':
-                    msg = f"Today's date does not match the Spelling Bee date."
+                    msg = msg + "\n" + f"Today's date does not match the Spelling Bee date."
                 elif len(words) == 1 and words[0] == '' and end == False:
-                    msg = f"There are no words that start with **{hint}**."
+                    msg = msg + "\n" + f"There are no words that start with **{hint}**."
                 elif len(words) == 1 and words[0] == '' and end == True:
-                    msg = f"There are no words that end in **{hint}**."
+                    msg = msg + "\n" f"There are no words that end in **{hint}**."
                 else:
                     num_words = len(words)
                     if end == True:
-                        msg = f"There are {num_words} word(s) ending in **{hint[1:]}**:\n"
+                        msg = msg + "\n" + f"There are {num_words} word(s) ending in **{hint[1:]}**:\n"
                     else:
-                        msg = f"There are {num_words} word(s) starting with **{hint}**:\n"
+                        msg = msg + "\n" + f"There are {num_words} word(s) starting with **{hint}**:\n"
 
                     for word in words:
                         answer = "# -"
@@ -82,13 +96,12 @@ class Bee(BaseCommand):
                         msg = msg + answer +  "\n"
                 await message.channel.send(msg)
         else:
-            panagrams = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh']).split('\n')
-
+            panagrams = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted}']).split('\n')
             if panagrams == 'NULL':
-                msg = f"Today's date does not match the Spelling Bee date."
+                msg = msg + "\n" + f"Today's date does not match the Spelling Bee date."
             else:
                 num_panagrams = len(panagrams)
-                msg = f"There are {num_panagrams} panagram(s):\n"
+                msg = msg + "\n" + f"There are {num_panagrams} panagram(s):\n"
 
                 for word in panagrams:
                     answer = "# -"
