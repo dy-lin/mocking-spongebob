@@ -30,11 +30,11 @@ class Wordle(BaseCommand):
         wordle = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_wordle.sh']).split('\n')
 
         today = date.today().strftime("%A, %B %d, %Y")
-        await message.channel.send(f"# {today}")
+        msg = f"# {today}"
         if wordle == 'NULL':
-            msg = f"Today's date does not match the Wordle date."
+            msg = msg + "\n" + f"Today's date does not match the Wordle date."
         else:
-            answer = "# **Answer:**"
+            answer = msg + "\n" + "# **Answer:**"
             for letter in wordle[len(wordle)-1]:
                 answer = answer + f"   ||{letter}||"
             msg = answer + "\n\n\n"
