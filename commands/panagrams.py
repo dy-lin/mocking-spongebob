@@ -94,7 +94,7 @@ class Bee(BaseCommand):
                                         answer = answer + f"   ||{letter}||"
                             i = i + 1
                         msg = msg + answer +  "\n"
-                await message.channel.send(msg)
+            await message.channel.send(msg)
         else:
             panagrams = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted}']).split('\n')
             if panagrams == 'NULL':
