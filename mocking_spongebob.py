@@ -64,7 +64,7 @@ def main():
             except Exception as error:
                 print("Error while handling message", error, flush=True)
                 raise
-        if "instagram.com" in text and message.author.name != "Mocking Spongebob":
+        elif "instagram.com" in text and message.author.name != "Mocking Spongebob":
             # find which part as instagram in it
             ig_index = [i for i, item in enumerate(text.split()) if re.search('instagram.com', item)][0]
             url = text.split()[ig_index]

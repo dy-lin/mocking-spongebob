@@ -9,7 +9,7 @@ class Ig(BaseCommand):
 
     def __init__(self):
         # A quick description for the help message
-        description = "Fixes lowercase L's when adjacent to uppercase i's"
+        description = "Embeds instagram links"
         # A list of parameters that the command will take as input
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
