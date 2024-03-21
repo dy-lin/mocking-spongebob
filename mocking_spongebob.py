@@ -8,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from events.base_event              import BaseEvent
 from events                         import *
 from multiprocessing                import Process
-
+import re
 # Set to remember if the bot is already running, since on_ready may be called
 # more than once on reconnects
 this = sys.modules[__name__]
@@ -61,6 +61,16 @@ def main():
             try:
                 await message_handler.handle_command(cmd_split[0].lower(), 
                                       cmd_split[1:], message, client)
+            except Exception as error:
+                print("Error while handling message", error, flush=True)
+                raise
+        if "instagram.com" in text and message.author.name != "Mocking Spongebob":
+            # find which part as instagram in it
+            ig_index = [i for i, item in enumerate(text.split()) if re.search('instagram.com', item)][0]
+            url = text.split()[ig_index]
+            try:
+                await message_handler.handle_command("ig", 
+                                      [ url ], message, client)
             except Exception as error:
                 print("Error while handling message", error, flush=True)
                 raise
