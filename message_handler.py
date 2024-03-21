@@ -21,7 +21,7 @@ async def handle_command(command, args, message, bot_client):
         return
 
     print(f"{message.author.name}: {settings.COMMAND_PREFIX}{command} " 
-          + " ".join(args))
+          + " ".join(args), flush = True)
 
     # Retrieve the command
     cmd_obj = COMMAND_HANDLERS[command]
