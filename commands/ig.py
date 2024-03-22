@@ -1,7 +1,7 @@
 from commands.base_command  import BaseCommand
 import os
-# Your friendly example event
-# Keep in mind that the command name will be derived from the class name
+import re
+# Your friendly example event # Keep in mind that the command name will be derived from the class name
 # but in lowercase
 
 # So, a command class named Random will generate a 'random' command
@@ -25,6 +25,11 @@ class Ig(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
-        # message.edit(suppress=True)
-        msg = params[0].replace("instagram", "ddinstagram")
-        await message.channel.send(msg)
+        if len(params) > 1: 
+            ig_index = [ i for i, item in enumerate(params) if re.search('instagram.com', item)][0]
+            url = params.pop(ig_index)
+            msg = " ".join(params) + "\n" + url.replace("instagram", "ddinstagram")
+            await message.channel.send(f"**{message.author.nick}**: {msg}")
+        else:
+            msg = params[0].replace("instagram", "ddinstagram")
+            await message.channel.send(msg)
