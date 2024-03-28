@@ -25,10 +25,19 @@ class Ig(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
+        spoiler = False
         if len(params) > 1: 
             ig_index = [ i for i, item in enumerate(params) if re.search('instagram.com', item)][0]
+            if ig_index+1 < len(params):
+                if params[ig_index-1] == "||" and params[ig_index+1] == "||":
+                    spoiler = True
             url = params.pop(ig_index)
-            msg = " ".join(params) + "\n" + url.replace(".instagram", ".ddinstagram")
+            if spoiler == True:
+                params.pop(ig_index)
+                params.pop(ig_index-1)
+                msg = " ".join(params) + "\n || " + url.replace(".instagram", ".ddinstagram") + " ||"
+            else:
+                msg = " ".join(params) + "\n" + url.replace(".instagram", ".ddinstagram")
             await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             msg = params[0].replace(".instagram", ".ddinstagram")
