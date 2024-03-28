@@ -28,8 +28,8 @@ class Ig(BaseCommand):
         if len(params) > 1: 
             ig_index = [ i for i, item in enumerate(params) if re.search('instagram.com', item)][0]
             url = params.pop(ig_index)
-            msg = " ".join(params) + "\n" + url.replace("instagram", "ddinstagram")
+            msg = " ".join(params) + "\n" + url.replace(".instagram", ".ddinstagram")
             await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
-            msg = params[0].replace("instagram", "ddinstagram")
+            msg = params[0].replace(".instagram", ".ddinstagram")
             await message.channel.send(msg)
