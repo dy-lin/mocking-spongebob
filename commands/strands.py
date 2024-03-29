@@ -32,15 +32,16 @@ class Strands(BaseCommand):
 
        today = date.today().strftime("%A, %B %d, %Y")
        theme = strands[0]
-       spanagram, spanagram_hint = strands[7].split(": ")
-       spanagram_censored = ""
-       spanagram_hint_censored = f"|| {spanagram_hint} ||"
-       for letter in spanagram.upper():
-           spanagram_censored = spanagram_censored + f"|| {letter} ||  "
+       theme_hint = strands[1]
+       spangram, spangram_hint = strands[8].split(": ")
+       spangram_censored = ""
+       spangram_hint_censored = f"|| {spangram_hint} ||"
+       for letter in spangram.upper():
+           spangram_censored = spangram_censored + f"|| {letter} ||  "
 
-       msg = f"# {today}\n## **Theme**: {theme}\n## **Spanagram**: {spanagram_censored}\n**Hint**: {spanagram_hint_censored}"
+       msg = f"# {today}\n## **THEME**: {theme}\n{theme_hint}\n## **SPANGRAM**: {spangram_censored}\n**Hint**: {spangram_hint_censored}"
 
-       for i in strands[1:6]:
+       for i in strands[2:7]:
            word, hint = i.split(": ")
            word_censored = ""
            for letter in word.upper():
