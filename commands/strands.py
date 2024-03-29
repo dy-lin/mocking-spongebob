@@ -41,7 +41,7 @@ class Strands(BaseCommand):
 
        msg = f"# {today}\n## **THEME**: {theme}\n{theme_hint}\n## **SPANGRAM**: {spangram_censored}\n**Hint**: {spangram_hint_censored}"
 
-       for i in strands[2:7]:
+       for i in strands[2:8]:
            word, hint = i.split(": ")
            word_censored = ""
            for letter in word.upper():
