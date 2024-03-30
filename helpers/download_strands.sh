@@ -7,10 +7,19 @@ url_date=${month,,}-${day_year}
 
 date_short=$(date '+%b%d')
 
-url=https://www.thegamer.com/nyt-strands-answers-and-hints-${url_date}/
+url=https://www.thegamer.com/nyt-strands-answers-hints-${url_date}/
 html=/Users/dianalin/mocking-spongebob/files/strands.html
 if [[ ! -f "/Users/dianalin/mocking-spongebob/temp/strands_${date_short}" ]]; then
 	curl -o $html $url 2> /dev/null
+
+	if [[ "$(grep -wc '404' $html)" -gt 0 ]]; then
+		url=https://www.thegamer.com/nyt-strands-answers-and-hints-${url_date}/
+		curl -o $html $url 2> /dev/null
+		if [[ "$(grep -wc '404' $html)" -gt 0 ]]; then
+			echo NULL
+			exit 0 
+		fi
+	fi
 	touch /Users/dianalin/mocking-spongebob/temp/strands_${date_short}
 	rm -rf $(ls /Users/dianalin/mocking-spongebob/temp/strands_* | grep -v ${date_short}) 2> /dev/null
 fi
