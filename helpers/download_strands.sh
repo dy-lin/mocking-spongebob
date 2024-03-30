@@ -27,7 +27,7 @@ fi
 theme=$(grep 'theme is' $html | awk -F "<strong>|</strong>" '{print $2}' | gsed "s/&rsquo;/'/")
 echo "$theme"
 
-theme_hint=$(grep 'The theme' $html | awk -F "<p>|</p>" '{print $2}' | gsed 's/^ \+//')
+theme_hint=$(grep 'The theme' $html | awk -F "<p>|</p>" '{print $2}' | gsed 's/^ \+//' | gsed 's|</\?[a-z]\+>||g') 
 echo "$theme_hint"
 
 for i in "first" "second" "third" "fourth" "fifth" "sixth" "spangram"; do 
