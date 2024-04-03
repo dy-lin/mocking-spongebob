@@ -2,11 +2,12 @@
 
 set -euo pipefail 
 month=$(date '+%B')
-day_year=$(date '+%d-%Y')
-url_date=${month,,}-${day_year}
+# day_year=$(date '+%d-%Y')
+day=$(date '+%e' | gsed 's/^ //')
+year=$(date '+%Y')
+url_date=${month,,}-${day}-${year}
 
 date_short=$(date '+%b%d')
-
 url=https://www.thegamer.com/nyt-strands-answers-hints-${url_date}/
 html=/Users/dianalin/mocking-spongebob/files/strands.html
 if [[ ! -f "/Users/dianalin/mocking-spongebob/temp/strands_${date_short}" ]]; then
