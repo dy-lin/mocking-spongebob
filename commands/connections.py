@@ -30,8 +30,9 @@ class Conn(BaseCommand):
 
         today = date.today().strftime("%A, %B %d, %Y")
         await message.channel.send(f"# {today}")
-        if cxn == 'NULL':
-            msg = f"Today's date does not match the Connections date."
+        if len(cxn) == 1 and cxn == 'NULL':
+            # msg = f"Today's date does not match the Connections date."
+            msg = f"There is something wrong with today's URL."
             await message.channel.send(msg)
         else:
             for i in cxn:

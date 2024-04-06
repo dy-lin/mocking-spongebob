@@ -7,14 +7,28 @@ date_short=$(date '+%b%d')
 
 month=$(date '+%B')
 day=$(date '+%e' | gsed 's/^ //')
+year=$(date '+%Y')
 
 # url_date=$(date '+%B-%-d-%Y')
-url_date=${month,,}-${day}
+url_date=${month,,}-${day}-${year}
+base_url=https://mashable.com/article/nyt-connections-hint-answer-today
 
-
-url=https://mashable.com/article/nyt-connections-hint-answer-today
+urls_to_try=( ${base_url}-${url_date} ${base_url}-${month,,}-${day} )
 if [[ ! -f "/Users/dianalin/mocking-spongebob/temp/connections_${date_short}" ]]; then
-	curl -o $html ${url}-${url_date,,} 2>/dev/null
+
+	for url in "${urls_to_try[@]}"; do 
+		curl -o $html ${url} 2>/dev/null
+
+		if [[ "$(grep -wc '404' $html)" -eq 0 ]]; then
+			break
+		fi
+	done
+fi
+
+if [[ "$(grep -wc '404' $html)" -gt 0 ]]; then
+	echo NULL
+	exit 0
+else
 	touch /Users/dianalin/mocking-spongebob/temp/connections_${date_short} 
 	rm -f $(ls /Users/dianalin/mocking-spongebob/temp/connections_* | grep -v ${date_short}) 2> /dev/null
 fi
