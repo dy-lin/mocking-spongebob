@@ -31,7 +31,7 @@ else
 	rm -rf $(ls /Users/dianalin/mocking-spongebob/temp/strands_* | grep -v ${date_short}) 2> /dev/null
 fi
 
-theme=$(grep 'theme is' $html | awk -F "<strong>|</strong>" '{print $2}' | gsed "s/&rsquo;/'/")
+theme=$(grep 'theme is' $html | awk -F "<strong>|</strong>" '{print $2}' | gsed "s/&rsquo;/'/" | gsed "s/&#39;/'/")
 echo "$theme"
 
 theme_hint=$(grep 'The theme' $html | awk -F "<p>|</p>" '{print $2}' | gsed 's/^ \+//' | gsed 's|</\?[a-z]\+>||g') 
