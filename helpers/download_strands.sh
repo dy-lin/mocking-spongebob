@@ -40,9 +40,9 @@ echo "$theme_hint"
 for i in "first" "second" "third" "fourth" "fifth" "sixth" "spangram"; do 
 	if [[ "$i" == "spangram" ]]; then
 		word=$(grep "${i}" $html | tail -n1 | awk '{print $NF}' | gsed 's|</\?[a-z]\+>||g' | gsed 's/\.$//')
-		hint=$(grep "${i}" $html | head -n1 | gsed 's|</\?[a-z]\+>||g' | awk -F "spangram" '{print $2}' | gsed 's/^ \+//' | gsed 's/\.$//' | gsed 's/^ \?is \?//' | gsed 's/^ \?refers to \?//')
+		hint=$(grep "${i}" $html | head -n1 | gsed 's|</\?[a-z]\+>||g' | awk -F "spangram" '{print $2}' | gsed 's/^ \+//' | gsed 's/\.$//' | gsed 's/^ \?\(is \)\?\(are \)\?//' | gsed 's/^ \?refers to \?//')
 	else
-		hint=$(grep "${i} word" $html | head -n1 |  gsed 's|</\?[a-z]\+>||g' | awk -F " word " '{print $2}' | gsed 's/\.$//' | gsed 's/^ \?is \?//')
+		hint=$(grep "${i} word" $html | head -n1 |  gsed 's|</\?[a-z]\+>||g' | awk -F " word" '{print $2}' | gsed 's/\.$//' | gsed 's/^ \?\(is \)\?\(are \)\?//' | gsed 's/^[ ,]\+//')
 		word=$(grep "${i} word" $html | tail -n1 | gsed 's|</\?[a-z]\+>||g' | awk -F " is " '{print $2}' | gsed 's/\.$//') 
 	fi
 	if [[ -n "${word}" ]]; then
