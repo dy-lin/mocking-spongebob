@@ -42,7 +42,8 @@ for i in "first" "second" "third" "fourth" "fifth" "sixth" "spangram"; do
 		word=$(grep "${i}" $html | tail -n1 | awk '{print $NF}' | gsed 's|</\?[a-z]\+>||g' | gsed 's/\.$//')
 		hint=$(grep "${i}" $html | head -n1 | gsed 's|</\?[a-z]\+>||g' | awk -F "spangram" '{print $2}' | gsed 's/^ \+//' | gsed 's/\.$//' | gsed 's/^ \?\(is \)\?\(are \)\?//' | gsed 's/^ \?refers to \?//' | gsed "s/&#39;/'/g")
 	else
-		hint=$(grep "${i} word" $html | head -n1 |  gsed 's|</\?[a-z]\+>||g' | awk -F " word" '{print $2}' | gsed 's/\.$//' | gsed 's/^ \?\(is \)\?\(are \)\?//' | gsed 's/^[ ,]\+//' | gsed "s/&#39;/'/g")
+		# hint=$(grep "${i} word" $html | head -n1 |  gsed 's|</\?[a-z]\+>||g' | awk -F " word" '{print $2}' | gsed 's/\.$//' | gsed 's/^ \?\(is \)\?\(are \)\?//' | gsed 's/^[ ,]\+//' | gsed "s/&#39;/'/g")
+		hint=$(grep "${i} word" $html | head -n1 | awk -F "</strong>" '{print $2}' | gsed 's|</\?[a-z]\+>||g' | gsed 's/\.$//' | gsed 's/^ \?\(is \)\?\(are \)\?//' | gsed 's/^[ ,]\+//' | gsed "s/&#39;/'/g")
 		word=$(grep "${i} word" $html | tail -n1 | gsed 's|</\?[a-z]\+>||g' | awk -F " is " '{print $2}' | gsed 's/\.$//') 
 	fi
 	if [[ -n "${word}" ]]; then
