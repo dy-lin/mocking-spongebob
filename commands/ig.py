@@ -36,9 +36,13 @@ class Ig(BaseCommand):
                 params.pop(ig_index)
                 params.pop(ig_index-1)
                 msg = " ".join(params) + "\n || " + url.replace(".instagram", ".ddinstagram") + " ||"
+                if len(params) == 1:
+                    await message.channel.send(f"{msg}")
+                else:
+                    await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
                 msg = " ".join(params) + "\n" + url.replace(".instagram", ".ddinstagram")
-            await message.channel.send(f"**{message.author.nick}**: {msg}")
+                await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             msg = params[0].replace(".instagram", ".ddinstagram")
             await message.channel.send(msg)
