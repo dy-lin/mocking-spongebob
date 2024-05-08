@@ -34,7 +34,7 @@ fi
 theme=$(grep 'theme is' $html | awk -F "<strong>|</strong>" '{print $2}' | gsed "s/&rsquo;/'/" | gsed "s/&#39;/'/g")
 echo "$theme"
 
-theme_hint=$(grep 'The theme' $html | awk -F "<p>|</p>" '{print $2}' | gsed 's/^ \+//' | gsed 's|</\?[a-z]\+>||g') 
+theme_hint=$(grep 'The theme' $html | awk -F "<p>|</p>" '{print $2}' | gsed 's/^ \+//' | gsed 's|</\?[a-z]\+>||g' | gsed "s/&#39;/'/g") 
 echo "$theme_hint"
 
 for i in "first" "second" "third" "fourth" "fifth" "sixth" "spangram"; do 
