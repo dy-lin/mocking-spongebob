@@ -96,7 +96,7 @@ class Mock(BaseCommand):
             spoiler = False
             if len(links) > 1: 
                 ig_index = [ i for i, item in enumerate(links) if re.search('instagram.com', item)][0]
-                if ig_index+1 < len(params):
+                if ig_index+1 < len(links):
                     if links[ig_index-1] == "||" and links[ig_index+1] == "||":
                         spoiler = True
                 url = links.pop(ig_index)
@@ -106,10 +106,9 @@ class Mock(BaseCommand):
                     msg = " ".join(links) + "\n || " + url.replace(".instagram", ".ddinstagram") + " ||"
                     mocked = mocked + " " + msg
                 else:
-                    msg = " ".join(params) + "\n" + url.replace(".instagram", ".ddinstagram")
+                    msg = " ".join(links) + "\n" + url.replace(".instagram", ".ddinstagram")
                     mocked = mocked + " " + msg
             else:
-                msg = params[0].replace(".instagram", ".ddinstagram")
+                msg = links[0].replace(".instagram", ".ddinstagram")
                 mocked = mocked + " " + msg
-
-         await message.channel.send(f"**{message.author.nick}**: {mocked}")
+        await message.channel.send(f"**{message.author.nick}**: {mocked}")
