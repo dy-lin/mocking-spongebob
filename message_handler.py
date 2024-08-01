@@ -19,7 +19,6 @@ async def handle_command(command, args, message, bot_client):
     # with some other bot)
     if command not in COMMAND_HANDLERS:
         return
-
     print(f"{message.author.name}: {settings.COMMAND_PREFIX}{command} " 
           + " ".join(args), flush = True)
 
@@ -28,4 +27,5 @@ async def handle_command(command, args, message, bot_client):
     if cmd_obj.params and len(args) < len(cmd_obj.params):
         await message.channel.send(message.author.mention + " Insufficient parameters!")
     else:
+        await message.delete()
         await cmd_obj.handle(args, message, bot_client)

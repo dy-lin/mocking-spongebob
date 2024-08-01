@@ -56,6 +56,7 @@ def main():
     # The message handler for both new message and edits
     async def common_handle_message(message):
         text = message.content
+        f = open("/Users/dianalin/mocking-spongebob/files/instafix", "r")
         if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
             cmd_split = text[len(settings.COMMAND_PREFIX):].split()
             try:
@@ -64,13 +65,14 @@ def main():
             except Exception as error:
                 print("Error while handling message", error, flush=True)
                 raise
-        elif "instagram.com" in text and message.author.name != "Mocking Spongebob":
-            await message.delete()
+        elif "instagram.com" in text and message.author.name != "Mocking Spongebob" and f.read() == "on":
+            # await message.delete() # removed because this was added to message_handler so should be applied to all commands, which this one calls ig under the hood.
             try:
                 await message_handler.handle_command("ig", 
                                       text.split(), message, client)
             except Exception as error:
                 print("Error while handling message", error, flush=True)
+                print("Use !instafix <on> or <off>", flush = True)
                 raise
 
     @client.event

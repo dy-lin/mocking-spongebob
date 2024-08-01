@@ -14,7 +14,7 @@ class Fix(BaseCommand):
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
         # If no params are expected, leave this list empty or set it to None
-        params = []
+        params = ["on/off"]
         super().__init__(description, params)
 
     # Override the handle() method
@@ -41,5 +41,15 @@ class Fix(BaseCommand):
 
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
-        os.environ["FIXL"] = "True"
-        await message.channel.send("L's will be uppercase and i's will be lowercase when adjacent.")
+        if params[0].lower() == "on":
+            f = open("/Users/dianalin/mocking-spongebob/files/fixl", "w")
+            f.write("on")
+            f.close()
+            await message.channel.send("L's will be uppercase and i's will be lowercase when adjacent.")
+        elif params[0].lower() == "off":
+            f = open("/Users/dianalin/mocking-spongebob/files/fixl", "w")
+            f.write("off")
+            f.close()
+            await message.channel.send("L's will be randomized.")
+        else:
+            await message.channel.send("!fix should be used with <on> or <off>.")
