@@ -34,7 +34,6 @@ class Mock(BaseCommand):
 
         # try:
 
-        # TODO
         # use pop to remove the param that starts with an http or a www or contains a .com/
         # add it to the end of the message after mocking
         r = re.compile("^http.*|.*\.com/?.*|^www\..*")
@@ -42,6 +41,13 @@ class Mock(BaseCommand):
 
         for i in links:
             params.remove(i)
+
+        # TODO enable spoiler with space support here 
+        # need to grab value of previous item in list and one after it too if they are ||. 
+        # how to grab indices of regex matches? 
+        # or how to grab index of item given its value? how does this handle repeats?
+        # need to set spoiler = True after detection complete
+        spoiler = False
 
         text = " ".join(params).lower()
         # except ValueError:
@@ -91,14 +97,10 @@ class Mock(BaseCommand):
          
         if fix == "on":
             mocked = mocked.replace("IlI", "iLi").replace("Il", "iL").replace("lI", "Li")
-
+        
         if instafix == "on":
-            spoiler = False
-            if len(links) > 1: 
+            if len(links) > 0: 
                 ig_index = [ i for i, item in enumerate(links) if re.search('instagram.com', item)][0]
-                if ig_index+1 < len(links):
-                    if links[ig_index-1] == "||" and links[ig_index+1] == "||":
-                        spoiler = True
                 url = links.pop(ig_index)
                 if spoiler == True:
                     links.pop(ig_index)
@@ -108,7 +110,4 @@ class Mock(BaseCommand):
                 else:
                     msg = " ".join(links) + "\n" + url.replace(".instagram", ".ddinstagram")
                     mocked = mocked + " " + msg
-            else:
-                msg = links[0].replace(".instagram", ".ddinstagram")
-                mocked = mocked + " " + msg
         await message.channel.send(f"**{message.author.nick}**: {mocked}")
