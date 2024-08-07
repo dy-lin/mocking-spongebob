@@ -1,6 +1,7 @@
 from commands.base_command  import BaseCommand
 import json
 import os.path
+import re
 # Your friendly example event
 # Keep in mind that the command name will be derived from the class name
 # but in lowercase
@@ -96,16 +97,43 @@ class Gro(BaseCommand):
             else:
                 groceries = {}
 
- 
 
 
  # will be called groceries
-            if subcommand not in ["add", "remove", "clear", "list", "delete", "edit", "append"]:
+            if subcommand not in ["add", "remove", "clear", "list", "delete", "edit", "append", "cross", "strike", "check", "tick", "update", "info", "help"]:
                 await message.channel.send(f"Unrecognized subcommand: *{subcommand}*")
                 return
             else:
                 # CHECKBOX = u'\u2751'
 
+                if subcommand == "info" or subcommand == "help":
+                    # add: add items
+                    # remove: remove items by name or indices -- indices are based on last list command
+                    # clear: removes all items on a list 
+                    # list: list all items (including those crossed off or checked)
+                    # delete: delete entire grocery lists (aka sublists)
+                    # edit: replace the item entirely 
+                    # append: add to existing item
+                    # cross / strike : strikethrough item 
+                    # check / tick: add checkmark emoji to the end 
+                    # update: remove all items that start with stikethrough and checkmarks
+                    msg = """
+                    # Instructions
+                    ## `!gro <action> <list> <item(s) by name or index, comma separated for multiple, or "quoted for compound phrases">`
+                    - `add`: add items to the list (e.g. `!gro add Costco lactase`). To add multiple items with multiple words, use quotation marks around the item. (e.g. `!gro add Costco "pita chips, lactase"`. Spaces after commas optional. The same applies for list names with spaces (e.g. `!gro add "Trader Joe's" "mac and cheese"`)
+                    - `remove`: remove items from the list by name or number (e.g. `!gro remove Costco lactase`, `!gro remove Costco 1,2`). To remove multiple items with multiple words, use the same syntax as above.
+                    - `list`: list all items in the list (e.g. `!gro list Costco`)
+                    - `new`: create a new empty list (e.g. `!gro new Costco`)
+                    - `edit`: replace items from the list BY NUMBER ONLY (e.g. `!gro edit Costco 1 Dairy again lactose only`)
+                    - `append`: append to item BY NUMBER ONLY (e.g. `!gro edit Costco 1 lactase if on sale`)
+                    - `clear`: clear the entire list (e.g. `!gro clear Costco`), resulting in an empty list called Costco
+                    - `delete`: delete the entire list (e.g. `!gro delete Costco`), where the list Costco ceases to exist
+                    - `strike` or `cross`: strikethrough an item on the list by name or number but keep it in the list (e.g. `!gro strike Costco 1`)
+                    - `check` or `tick`: check off an item on the list by name or number but keep it in the list (e.g. `!gro check Costco 1`)
+                    - `update`: removes all checked or crossed items in a list (e.g. `!gro update Costco`)
+                    """
+                    await message.channel.send(msg) 
+                    return
                 # check if the listname exists
                 if sublist not in ["all"] + list(groceries.keys()):
                     # create the list
@@ -192,6 +220,43 @@ class Gro(BaseCommand):
                                 await message.channel.send(f"First item must be an index: {string[0]}")
                         else:
                             await message.channel.send(f"Missing item to {subcommand}.")
+                elif subcommand == "update":
+                    if sublist not in list(groceries.keys()):
+                        indices = sublist.replace(", ", ",").split(",")
+                        try:
+                            # if the first item can be converted into an int, means that it was intended as the indices number and the list is missing
+                            x = int(indices[0])
+                            await message.channel.send(f"Missing list argument.")
+                        except ValueError as ve:
+                            # if indices cannot be converted into int and is empty string, then the list arg is missing entirely
+                            if indices[0] == "":
+                                await message.channel.send(f"Missing list argument.")
+                            # if indices is still a string, then it means the list given unrecognized
+                            else:
+                                await message.channel.send(f"Unrecognized list: **{sublist}**")
+                    else:
+                        # get all indices that start with "~~" and ends with ":ballot_box_with_check:"
+                        # remove these from the list
+                        # print the list again - do not self destruct
+                        regex = re.compile("^~~|.*:ballot_box_with_check:$") 
+                        groceries[sublist] = [i for i in groceries[sublist] if not regex.match(i) ] 
+
+                        msg = [ f"# :shopping_cart: **{sublist}**" ]
+                        items = []
+                        for index, i in enumerate(groceries[sublist]):
+                            idx = index+1
+                            # items.append(f"\t{idx : >2}. {i.capitalize()}")
+                            items.append(f"{idx}. {i.capitalize()}")
+                        msg.extend(items)
+                        text = '\n'.join(msg)
+                        # do not self destruct for updating
+                        # await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+                        await message.channel.send(text) 
+                        jsonfile = json.dumps(groceries, indent = 4)
+                        with open(savefile, "w") as f:
+                            f.write(jsonfile)
+
+
                 elif subcommand == "remove":
                     # if the sublist is not in the grocery keys, check if that arg is a number after splitting by commas
                     if sublist not in list(groceries.keys()):
@@ -227,6 +292,72 @@ class Gro(BaseCommand):
                                         item = copy[index-1] # get item from original list
                                         idx = groceries[sublist].index(item) # get new index from new list using original item
                                         temp = groceries[sublist].pop(idx) # use the new index to pop 
+                                        removed.append(item.replace("~~", "").replace(":ballot_box_with_check:", ""))
+                                        # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
+                                except ValueError as ve:
+                                    # if the indices is actually an item itself
+                                    if i not in groceries[sublist]:
+                                        await message.channel.send(f"Unrecognized item: *{i}*")
+                                    else:
+                                        # remove using name
+                                        groceries[sublist].remove(i)
+                                        removed.append(i.replace("~~","").replace(":ballot_box_with_check:", ""))
+                                        # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
+                            text = ", ".join(removed)
+                            await message.channel.send(f"Removed *{text}* from **{sublist}**.")
+                            msg = [ f"# :shopping_cart: **{sublist}**" ]
+                            items = []
+                            for index, i in enumerate(groceries[sublist]):
+                                idx = index+1
+                                # items.append(f"\t{idx : >2}. {i.capitalize()}")
+                                items.append(f"{idx}. {i.capitalize()}")
+                            msg.extend(items)
+                            text = '\n'.join(msg)
+                            # do not self destruct for removal
+                            # await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+                            await message.channel.send(text) 
+                            jsonfile = json.dumps(groceries, indent = 4)
+                            with open(savefile, "w") as f:
+                                f.write(jsonfile)
+                        else:
+                            await message.channel.send(f"Missing item to be removed.")
+                # checkmark
+                elif subcommand == "check" or subcommand == "tick":
+                    # if the sublist is not in the grocery keys, check if that arg is a number after splitting by commas
+                    if sublist not in list(groceries.keys()):
+                        indices = sublist.replace(", ", ",").split(",")
+                        try:
+                            # if the first item can be converted into an int, means that it was intended as the indices number and the list is missing
+                            x = int(indices[0])
+                            await message.channel.send(f"Missing list argument.")
+                        except ValueError as ve:
+                            # if indices cannot be converted into int and is empty string, then the list arg is missing entirely
+                            if indices[0] == "":
+                                await message.channel.send(f"Missing list argument.")
+                            # if indices is still a string, then it means the list given unrecognized
+                            else:
+                                await message.channel.send(f"Unrecognized list: **{sublist}**")
+                    else:
+                        # the list is valid, and the item is slot is not empty
+                        if item != "":
+                            # assume that multiple indices are given
+                            indices = item.replace(", ", ",").split(",")
+                            # create a copy of the grocery list to retain the indices
+                            copy = groceries[sublist].copy()
+                            removed = []
+                            # for each indices
+                            for i in indices:
+                                try:
+                                    # if indices is an int
+                                    index = int(i)
+                                    # then check if its in range of the available indices (+1 since python iz zero based) 
+                                    if index not in range(1, len(copy)+1):
+                                        await message.channel.send("Unrecognized index: *{index}*")
+                                    else:
+                                        item = copy[index-1] # get item from original list
+                                        idx = groceries[sublist].index(item) # get new index from new list using original item
+                                        # temp = groceries[sublist].pop(idx) # use the new index to pop 
+                                        groceries[sublist][idx] = item + " :ballot_box_with_check:"
                                         removed.append(item)
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
                                 except ValueError as ve:
@@ -239,7 +370,7 @@ class Gro(BaseCommand):
                                         removed.append(i)
                                         # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
                             text = ", ".join(removed)
-                            await message.channel.send(f"Removed *{text}* from **{sublist}**.")
+                            await message.channel.send(f"Checked off *{text}* from **{sublist}**.")
                             msg = [ f"# :shopping_cart: **{sublist}**" ]
                             items = []
                             for index, i in enumerate(groceries[sublist]):
@@ -248,7 +379,74 @@ class Gro(BaseCommand):
                                 items.append(f"{idx}. {i.capitalize()}")
                             msg.extend(items)
                             text = '\n'.join(msg)
-                            await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+                            # do not self destruct after checking
+                            # await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+                            await message.channel.send(text)
+                            jsonfile = json.dumps(groceries, indent = 4)
+                            with open(savefile, "w") as f:
+                                f.write(jsonfile)
+                        else:
+                            await message.channel.send(f"Missing item to be removed.")
+                elif subcommand == "cross" or subcommand == "strike":
+                    # if the sublist is not in the grocery keys, check if that arg is a number after splitting by commas
+                    if sublist not in list(groceries.keys()):
+                        indices = sublist.replace(", ", ",").split(",")
+                        try:
+                            # if the first item can be converted into an int, means that it was intended as the indices number and the list is missing
+                            x = int(indices[0])
+                            await message.channel.send(f"Missing list argument.")
+                        except ValueError as ve:
+                            # if indices cannot be converted into int and is empty string, then the list arg is missing entirely
+                            if indices[0] == "":
+                                await message.channel.send(f"Missing list argument.")
+                            # if indices is still a string, then it means the list given unrecognized
+                            else:
+                                await message.channel.send(f"Unrecognized list: **{sublist}**")
+                    else:
+                        # the list is valid, and the item is slot is not empty
+                        if item != "":
+                            # assume that multiple indices are given
+                            indices = item.replace(", ", ",").split(",")
+                            # create a copy of the grocery list to retain the indices
+                            copy = groceries[sublist].copy()
+                            removed = []
+                            # for each indices
+                            for i in indices:
+                                try:
+                                    # if indices is an int
+                                    index = int(i)
+                                    # then check if its in range of the available indices (+1 since python iz zero based) 
+                                    if index not in range(1, len(copy)+1):
+                                        await message.channel.send("Unrecognized index: *{index}*")
+                                    else:
+                                        item = copy[index-1] # get item from original list
+                                        idx = groceries[sublist].index(item) # get new index from new list using original item
+                                        # temp = groceries[sublist].pop(idx) # use the new index to pop 
+                                        groceries[sublist][idx] = "~~" + item + "~~"
+                                        removed.append(item)
+                                        # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
+                                except ValueError as ve:
+                                    # if the indices is actually an item itself
+                                    if i not in groceries[sublist]:
+                                        await message.channel.send(f"Unrecognized item: *{i}*")
+                                    else:
+                                        # remove using name
+                                        groceries[sublist].remove(i)
+                                        removed.append(i)
+                                        # await message.channel.send(f"Removed *{item}* from **{sublist}**.")
+                            text = ", ".join(removed)
+                            await message.channel.send(f"Crossed out *{text}* from **{sublist}**.")
+                            msg = [ f"# :shopping_cart: **{sublist}**" ]
+                            items = []
+                            for index, i in enumerate(groceries[sublist]):
+                                idx = index+1
+                                # items.append(f"\t{idx : >2}. {i.capitalize()}")
+                                items.append(f"{idx}. {i.capitalize()}")
+                            msg.extend(items)
+                            text = '\n'.join(msg)
+                            # do not self destruct after checking
+                            # await message.channel.send(":warning: This message will self-destruct in 5 seconds :warning:\n\n" + text, delete_after = 5) 
+                            await message.channel.send(text)
                             jsonfile = json.dumps(groceries, indent = 4)
                             with open(savefile, "w") as f:
                                 f.write(jsonfile)
