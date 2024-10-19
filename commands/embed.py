@@ -5,16 +5,16 @@ import os
 # but in lowercase
 
 # So, a command class named Random will generate a 'random' command
-class Instafix(BaseCommand):
+class Embed(BaseCommand):
 
     def __init__(self):
         # A quick description for the help message
-        description = "Turns on/off automatic InstaFix."
+        description = "Select which mode of embed."
         # A list of parameters that the command will take as input
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
         # If no params are expected, leave this list empty or set it to None
-        params = ["on/off"]
+        params = ["dd/ez/off"]
         super().__init__(description, params)
 
     # Override the handle() method
@@ -41,15 +41,20 @@ class Instafix(BaseCommand):
 
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
-        if params[0].lower() == "on":
-            f = open("/Users/dianalin/mocking-spongebob/files/instafix", "w")
-            f.write("on")
+        if params[0].lower() == "dd":
+            f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
+            f.write("dd")
             f.close()
-            await message.channel.send("Instafix turned on.")
+            await message.channel.send("Instagram embedding with dd.")
+        elif params[0].lower() == "ez":
+            f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
+            f.write("ez")
+            f.close()
+            await message.channel.send("Instagram embedding with ez.")
         elif params[0].lower() == "off":
-            f = open("/Users/dianalin/mocking-spongebob/files/instafix", "w")
+            f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
             f.write("off")
             f.close()
-            await message.channel.send("InstaFix turned off.")
+            await message.channel.send("Instagram embedding turned off.")
         else:
-            await message.channel.send("`!instafix must be used with <on> or <off>.")
+            await message.channel.send("`!embed` must be used with <dd> or <ez> or <off>.")

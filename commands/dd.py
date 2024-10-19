@@ -5,7 +5,7 @@ import re
 # but in lowercase
 
 # So, a command class named Random will generate a 'random' command
-class Ig(BaseCommand):
+class Dd(BaseCommand):
 
     def __init__(self):
         # A quick description for the help message
@@ -41,7 +41,7 @@ class Ig(BaseCommand):
                 else:
                     await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
-                msg = " ".join(params) + "\n" + url.replace(".instagram", ".ddinstagram")
+                msg = " ".join(params) + "\n" + url.replace("instagram", "ddinstagram")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             msg = params[0].replace("instagram", "ddinstagram")

@@ -119,8 +119,8 @@ class Gro(BaseCommand):
                     # update: remove all items that start with stikethrough and checkmarks
                     msg = """
                     # Instructions
-                    ## `!gro <action> <list> <item(s) by name or index, comma separated for multiple, or "quoted for compound phrases">`
-                    - `add`: add items to the list (e.g. `!gro add Costco lactase`). To add multiple items with multiple words, use quotation marks around the item. (e.g. `!gro add Costco "pita chips, lactase"`. Spaces after commas optional. The same applies for list names with spaces (e.g. `!gro add "Trader Joe's" "mac and cheese"`)
+                    ## `!gro <action> <list> <item(s) by name or index, comma separated for multiple items at once>`
+                    - `add`: add items to the list (e.g. `!gro add Costco lactase`). To add multiple items, use commas (e.g. `!gro add Costco pita chips, pringles`). Spaces after commas optional. For list names with spaces, surround with double quotes (e.g. `!gro add "Trader Joe's" mac and cheese, truffle chips`)
                     - `remove`: remove items from the list by name or number (e.g. `!gro remove Costco lactase`, `!gro remove Costco 1,2`). To remove multiple items with multiple words, use the same syntax as above.
                     - `list`: list all items in the list (e.g. `!gro list Costco`)
                     - `new`: create a new empty list (e.g. `!gro new Costco`)
