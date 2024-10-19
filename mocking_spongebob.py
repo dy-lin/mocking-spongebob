@@ -58,6 +58,7 @@ def main():
         text = message.content
         embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r")
         # possible values be "instafix", "ez", "off" if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
+        if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
             cmd_split = text[len(settings.COMMAND_PREFIX):].split()
             try:
                 await message_handler.handle_command(cmd_split[0].lower(), 
