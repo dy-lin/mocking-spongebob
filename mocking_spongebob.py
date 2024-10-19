@@ -56,34 +56,32 @@ def main():
     # The message handler for both new message and edits
     async def common_handle_message(message):
         text = message.content
-        embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r")
-        # possible values be "instafix", "ez", "off" if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
-        if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
-            cmd_split = text[len(settings.COMMAND_PREFIX):].split()
-            try:
-                await message_handler.handle_command(cmd_split[0].lower(), 
-                                      cmd_split[1:], message, client)
-            except Exception as error:
-                print("Error while handling message", error, flush=True)
-                raise
-        elif "instagram.com" in text and message.author.name != "Mocking Spongebob" and embed.read() == "dd":
-            # await message.delete() # removed because this was added to message_handler so should be applied to all commands, which this one calls ig under the hood.
-            try:
-                await message_handler.handle_command("dd", 
-                                      text.split(), message, client)
-            except Exception as error:
-                print("Error while handling message", error, flush=True)
-                print("Use !embed <dd> or <ez> or <off>", flush = True)
-                raise
-        elif "instagram.com" in text and message.author.name != "Mocking Spongebob" and embed.read() == "ez":
-            # await message.delete() # removed because this was added to message_handler so should be applied to all commands, which this one calls ig under the hood.
-            try:
-                await message_handler.handle_command("ez", 
-                                      text.split(), message, client)
-            except Exception as error:
-                print("Error while handling message", error, flush=True)
-                print("Use !embed <dd> or <ez> or <off>", flush = True)
-                raise
+        embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r").read()
+        # possible values be "dd", "ez", "off" if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
+        if message.author.name != "Mocking Spongebob":
+            if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
+                cmd_split = text[len(settings.COMMAND_PREFIX):].split()
+                try:
+                    await message_handler.handle_command(cmd_split[0].lower(), 
+                                          cmd_split[1:], message, client)
+                except Exception as error:
+                    print("Error while handling message", error, flush=True)
+                    raise
+            elif "instagram.com" in text:
+                if embed == "dd":
+                    try:
+                        if embed == "dd":
+                            await message_handler.handle_command("dd", 
+                                                  text.split(), message, client)
+                        elif embed == "ez":
+                            await message_handler.handle_command("ez", 
+                                                  text.split(), message, client)
+                    except Exception as error:
+                        print("Error while handling message", error, flush=True)
+                        print("Use !embed <dd> or <ez> or <off>", flush = True)
+                        raise
+        else:
+            print(f"{message.author.name}: {text}", flush = True)
 
     @client.event
     async def on_message(message):
