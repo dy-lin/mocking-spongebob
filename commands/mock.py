@@ -57,7 +57,7 @@ class Mock(BaseCommand):
         mocked = "*"
         alternate = open("/Users/dianalin/mocking-spongebob/files/alternate", "r").read()
         fix = open("/Users/dianalin/mocking-spongebob/files/fixl", "r").read()
-        instafix = open("/Users/dianalin/mocking-spongebob/files/instafix", "r").read()
+        embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r").read()
         if alternate == "on":
             if text[0] == "i":
                 count = 0
@@ -98,16 +98,28 @@ class Mock(BaseCommand):
         if fix == "on":
             mocked = mocked.replace("IlI", "iLi").replace("Il", "iL").replace("lI", "Li")
         
-        if instafix == "on":
+        if embed == "dd":
             if len(links) > 0: 
                 ig_index = [ i for i, item in enumerate(links) if re.search('instagram.com', item)][0]
                 url = links.pop(ig_index)
                 if spoiler == True:
                     links.pop(ig_index)
                     links.pop(ig_index-1)
-                    msg = " ".join(links) + "\n || " + url.replace(".instagram", ".ddinstagram") + " ||"
+                    msg = " ".join(links) + "\n || " + url.replace("instagram", "ddinstagram") + " ||"
                     mocked = mocked + " " + msg
                 else:
-                    msg = " ".join(links) + "\n" + url.replace(".instagram", ".ddinstagram")
+                    msg = " ".join(links) + "\n" + url.replace("instagram", "ddinstagram")
+                    mocked = mocked + " " + msg
+        if embed == "ez":
+            if len(links) > 0: 
+                ig_index = [ i for i, item in enumerate(links) if re.search('instagram.com', item)][0]
+                url = links.pop(ig_index)
+                if spoiler == True:
+                    links.pop(ig_index)
+                    links.pop(ig_index-1)
+                    msg = " ".join(links) + "\n || " + url.replace("instagram", "instagramez") + " ||"
+                    mocked = mocked + " " + msg
+                else:
+                    msg = " ".join(links) + "\n" + url.replace("instagram", "instagramez")
                     mocked = mocked + " " + msg
         await message.channel.send(f"**{message.author.nick}**: {mocked}")
