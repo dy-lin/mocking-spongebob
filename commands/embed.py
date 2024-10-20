@@ -14,7 +14,7 @@ class Embed(BaseCommand):
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
         # If no params are expected, leave this list empty or set it to None
-        params = ["dd/ez/off"]
+        params = []
         super().__init__(description, params)
 
     # Override the handle() method
@@ -41,20 +41,23 @@ class Embed(BaseCommand):
 
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
-        if params[0].lower() == "dd":
+        if len(params) == 0 or params[0].lower() == "current":
+            embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r").read()
+            await message.channel.send(f"Current embed: `{embed}`")
+        elif params[0].lower() == "dd":
             f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
             f.write("dd")
             f.close()
-            await message.channel.send("Instagram embedding with dd.")
+            await message.channel.send("Instagram embedding with `dd`.")
         elif params[0].lower() == "ez":
             f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
             f.write("ez")
             f.close()
-            await message.channel.send("Instagram embedding with ez.")
+            await message.channel.send("Instagram embedding with `ez`.")
         elif params[0].lower() == "off":
             f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
             f.write("off")
             f.close()
-            await message.channel.send("Instagram embedding turned off.")
+            await message.channel.send("Instagram embedding turned `off`.")
         else:
-            await message.channel.send("`!embed` must be used with <dd> or <ez> or <off>.")
+            await message.channel.send("USAGE: `!embed dd|ez|current|off`")
