@@ -68,18 +68,17 @@ def main():
                     print("Error while handling message", error, flush=True)
                     raise
             elif "instagram.com" in text:
-                if embed == "dd":
-                    try:
-                        if embed == "dd":
-                            await message_handler.handle_command("dd", 
-                                                  text.split(), message, client)
-                        elif embed == "ez":
-                            await message_handler.handle_command("ez", 
-                                                  text.split(), message, client)
-                    except Exception as error:
-                        print("Error while handling message", error, flush=True)
-                        print("Use !embed <dd> or <ez> or <off>", flush = True)
-                        raise
+                try:
+                    if embed == "dd":
+                        await message_handler.handle_command("dd", 
+                                              text.split(), message, client)
+                    elif embed == "ez":
+                        await message_handler.handle_command("ez", 
+                                              text.split(), message, client)
+                except Exception as error:
+                    print("Error while handling message", error, flush=True)
+                    print("Use `!embed` `dd|ez|current|off`", flush = True)
+                    raise
         else:
             print(f"{message.author.name}: {text}", flush = True)
 
