@@ -13,7 +13,7 @@ import requests
 class NexusEvent(BaseEvent):
 
     def __init__(self):
-        interval_minutes = 60  # Set the interval for this event
+        interval_minutes = 1  # Set the interval for this event
         super().__init__(interval_minutes)
 
     # Override the run() method
@@ -41,8 +41,7 @@ class NexusEvent(BaseEvent):
 
         url = SCHEDULER_API_URL.format(
             location=location_code,
-            start=start.strftime(TTP_TIME_FORMAT),
-            end=end.strftime(TTP_TIME_FORMAT)
+            start=start.strftime(TTP_TIME_FORMAT), end=end.strftime(TTP_TIME_FORMAT)
         )
         # print(f"Fetching data from {url}", flush = True)
 
@@ -58,11 +57,27 @@ class NexusEvent(BaseEvent):
                 print(f"Opening found for {location_name}", flush = True)
 
                 timestamp = datetime.strptime(result["timestamp"], TTP_TIME_FORMAT)
+                weekday = int(timestamp.strftime("%w"))
+                hour = int(timestamp.strftime("%-H"))
+
                 message = NOTIF_MESSAGE.format(
                     location=location_name,
                     date=timestamp.strftime(MESSAGE_TIME_FORMAT)
                 )
-                msg = f":bangbang: **ATTENTION** @daseinei :bangbang: {message}"
+                
+                # if weekend, notify everyone
+                if weekday == 0 or weekday == 6:
+                    msg = f":bangbang: **ATTENTION** @everyone :bangbang: {message}"
+                else:
+                # if weekday
+                    # if weekday between hours of workdays
+                    # TODO: consider different workdays for di, wfh vs onsite?
+                    if hour > 8 and hour < 16:
+                        msg = f":bangbang: **ATTENTION** @di.lyn :bangbang: {message}"
+                    # if outside of these hours, then ping everyone
+                    else:
+                        msg = f":bangbang: **ATTENTION** @everyone :bangbang: {message}"
+            
                 await channel.send(msg)
                 return  # Halt on first match
                 # TODO: return every match but use an embed? 
