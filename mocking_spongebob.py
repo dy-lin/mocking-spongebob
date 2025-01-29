@@ -79,13 +79,13 @@ def main():
                     print("Error while handling message", error, flush=True)
                     print("Use `!embed` `dd|ez|current|off`", flush = True)
                     raise
-            elif "tiktok.com" in text:
-                try:
-                    await message_handler.handle_command("tt", 
-                                          text.split(), message, client)
-                except Exception as error:
-                    print("Error while handling message", error, flush=True)
-                    raise
+            # elif "tiktok.com" in text:
+            #     try:
+            #         await message_handler.handle_command("tt", 
+            #                               text.split(), message, client)
+            #     except Exception as error:
+            #         print("Error while handling message", error, flush=True)
+            #         raise
 
                     
         else:
