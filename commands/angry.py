@@ -33,7 +33,7 @@ class Angry(BaseCommand):
         infile.close()
 
         if len(params) > 0:
-            if params[0] != "clear":
+            if params[0] != "clear" or params[0] != "0" or params[0] != "reset":
                 to_add = float(params[0].replace("$", ""))
                 new_balance = balance + to_add
                 format_balance = "${:.2f}".format(new_balance) 
