@@ -27,5 +27,7 @@ async def handle_command(command, args, message, bot_client):
     if cmd_obj.params and len(args) < len(cmd_obj.params):
         await message.channel.send(message.author.mention + " Insufficient parameters!")
     else:
-        await message.delete()
+        delete = open("/Users/dianalin/mocking-spongebob/files/delete", "r").read()
+        if delete == "on":
+            await message.delete()
         await cmd_obj.handle(args, message, bot_client)
