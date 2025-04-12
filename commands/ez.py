@@ -36,13 +36,15 @@ class Ez(BaseCommand):
                 params.pop(ig_index)
                 params.pop(ig_index-1)
                 msg = " ".join(params) + "\n || " + url.replace("instagram", "instagramez") + " ||"
-                if len(params) == 1:
-                    await message.channel.send(f"{msg}")
-                else:
-                    await message.channel.send(f"**{message.author.nick}**: {msg}")
+                # always send the author
+                # if len(params) == 1:
+                #     await message.channel.send(f"{msg}")
+                # else:
+                await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
                 msg = " ".join(params) + "\n" + url.replace("instagram", "instagramez")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             msg = params[0].replace("instagram", "instagramez")
-            await message.channel.send(msg)
+            # await message.channel.send(msg)
+            await message.channel.send(f"**{message.author.nick}**: {msg}")
