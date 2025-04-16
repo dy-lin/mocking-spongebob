@@ -88,8 +88,8 @@ def main():
             #         raise
 
                     
-        else:
-            print(f"{message.author.name}: {text}", flush = True)
+        # else:
+        #    print(f"{message.author.name}: {text}", flush = True)
 
     @client.event
     async def on_message(message):
