@@ -36,16 +36,16 @@ class Dd(BaseCommand):
                 params.pop(ig_index)
                 params.pop(ig_index-1)
                 msg = " ".join(params) + "\n || " + url.replace("instagram", "ddinstagram") + " ||"
-                og.msg = " ".join(params) + "\n || " + url + " ||"
+                og_msg = " ".join(params) + "\n || " + url + " ||"
                 # if len(params) == 1:
                 #     await message.channel.send(f"{msg}")
                 # else:
-                await message.channel.send(f"**{message.author.nick}**: {og.msg}")
+                await message.channel.send(f"**{message.author.nick}**: {og_msg}")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
                 msg = " ".join(params) + "\n" + url.replace("instagram", "ddinstagram")
-                og.msg = " ".join(params) + "\n" + url
-                await message.channel.send(f"**{message.author.nick}**: {og.msg}")
+                og_msg = " ".join(params) + "\n" + url
+                await message.channel.send(f"**{message.author.nick}**: {og_msg}")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             msg = params[0].replace("instagram", "ddinstagram")

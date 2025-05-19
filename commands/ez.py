@@ -35,17 +35,17 @@ class Ez(BaseCommand):
             if spoiler == True:
                 params.pop(ig_index)
                 params.pop(ig_index-1)
-                og.msg = " ".join(params) + "\n || " + url + " ||"
+                og_msg = " ".join(params) + "\n || " + url + " ||"
                 # always send the author
                 # if len(params) == 1:
                 #     await message.channel.send(f"{msg}")
                 # else:
-                await message.channel.send(f"**{message.author.nick}**: {og.msg}")
+                await message.channel.send(f"**{message.author.nick}**: {og_msg}")
                 msg = " ".join(params) + "\n || " + url.replace("instagram", "instagramez") + " ||"
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
-                og.msg = " ".join(params) + "\n" + url
-                await message.channel.send(f"**{message.author.nick}**: {og.msg}")
+                og_msg = " ".join(params) + "\n" + url
+                await message.channel.send(f"**{message.author.nick}**: {og_msg}")
                 msg = " ".join(params) + "\n" + url.replace("instagram", "instagramez")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
