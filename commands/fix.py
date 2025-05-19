@@ -42,12 +42,12 @@ class Fix(BaseCommand):
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
         if params[0].lower() == "on":
-            f = open("/Users/dianalin/mocking-spongebob/files/fixl", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/fixl", "w")
             f.write("on")
             f.close()
             await message.channel.send("L's will be uppercase and i's will be lowercase when adjacent.")
         elif params[0].lower() == "off":
-            f = open("/Users/dianalin/mocking-spongebob/files/fixl", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/fixl", "w")
             f.write("off")
             f.close()
             await message.channel.send("L's will be randomized.")

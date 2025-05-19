@@ -26,7 +26,7 @@ class Conn(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
 
-        cxn = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_connections.sh']).split("\n\n")
+        cxn = subprocess.getoutput(['C:/Users/Diana/mocking-spongebob/helpers/download_connections.sh']).split("\n\n")
 
         today = date.today().strftime("%A, %B %d, %Y")
         await message.channel.send(f"# {today}")

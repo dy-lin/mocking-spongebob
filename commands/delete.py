@@ -41,12 +41,12 @@ class Delete(BaseCommand):
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
         if params[0].lower() == "on":
-            f = open("/Users/dianalin/mocking-spongebob/files/delete", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/delete", "w")
             f.write("off")
             f.close()
             await message.channel.send("Now deleting bot commands.")
         elif params[0].lower() == "off":
-            f = open("/Users/dianalin/mocking-spongebob/files/delete", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/delete", "w")
             f.write("off")
             f.close()
             await message.channel.send("Now keeping bot commands.")

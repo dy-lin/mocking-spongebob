@@ -56,7 +56,7 @@ def main():
     # The message handler for both new message and edits
     async def common_handle_message(message):
         text = message.content
-        embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r").read()
+        embed = open("C:/Users/Diana/mocking-spongebob/files/embed", "r").read()
         # possible values be "dd", "ez", "off" if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
         if message.author.name != "Mocking Spongebob":
             if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:

@@ -51,7 +51,7 @@ class Bee(BaseCommand):
                     end = False
 
                 hint = start.upper()
-                words = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted} {hint}']).split('\n')
+                words = subprocess.getoutput([f'C:/Users/Diana/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted} {hint}']).split('\n')
                 if words == 'NULL':
                     msg = msg + "\n" + f"Today's date does not match the Spelling Bee date."
                 elif len(words) == 1 and words[0] == '' and end == False:
@@ -96,7 +96,7 @@ class Bee(BaseCommand):
                         msg = msg + answer +  "\n"
             await message.channel.send(msg)
         else:
-            panagrams = subprocess.getoutput([f'/Users/dianalin/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted}']).split('\n')
+            panagrams = subprocess.getoutput([f'C:/Users/Diana/mocking-spongebob/helpers/download_panagrams.sh {today_unformatted}']).split('\n')
             if panagrams == 'NULL':
                 msg = msg + "\n" + f"Today's date does not match the Spelling Bee date."
             else:

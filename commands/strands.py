@@ -28,7 +28,7 @@ class Strands(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
 
-       strands = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_strands.sh']).split('\n')
+       strands = subprocess.getoutput(['C:/Users/Diana/mocking-spongebob/helpers/download_strands.sh']).split('\n')
        if len(strands) == 1 and strands[0] == "NULL":
            print(strands, flush=True)
            await message.channel.send("Please check today's URL.") 

@@ -27,7 +27,7 @@ class Wordle(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
 
-        wordle = subprocess.getoutput(['/Users/dianalin/mocking-spongebob/helpers/download_wordle.sh']).split('\n')
+        wordle = subprocess.getoutput(['C:/Users/Diana/mocking-spongebob/helpers/download_wordle.sh']).split('\n')
 
         today = date.today().strftime("%A, %B %d, %Y")
         msg = f"# {today}"

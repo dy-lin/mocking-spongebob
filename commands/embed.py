@@ -42,20 +42,20 @@ class Embed(BaseCommand):
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
         if len(params) == 0 or params[0].lower() == "current":
-            embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r").read()
+            embed = open("C:/Users/Diana/mocking-spongebob/files/embed", "r").read()
             await message.channel.send(f"Current embed: `{embed}`")
         elif params[0].lower() == "dd":
-            f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/embed", "w")
             f.write("dd")
             f.close()
             await message.channel.send("Instagram embedding with `dd`.")
         elif params[0].lower() == "ez":
-            f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/embed", "w")
             f.write("ez")
             f.close()
             await message.channel.send("Instagram embedding with `ez`.")
         elif params[0].lower() == "off":
-            f = open("/Users/dianalin/mocking-spongebob/files/embed", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/embed", "w")
             f.write("off")
             f.close()
             await message.channel.send("Instagram embedding turned `off`.")

@@ -42,12 +42,12 @@ class Alternate(BaseCommand):
         # rolled = randint(lower_bound, upper_bound)
         # msg = get_emoji(":game_die:") + f" You rolled {rolled}!"
         if params[0].lower() == "on":
-            f = open("/Users/dianalin/mocking-spongebob/files/alternate", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/alternate", "w")
             f.write("on")
             f.close()
             await message.channel.send("Upper and lowercase letters should now alternate.")
         elif params[0].lower() == "off":
-            f = open("/Users/dianalin/mocking-spongebob/files/alternate", "w")
+            f = open("C:/Users/Diana/mocking-spongebob/files/alternate", "w")
             f.write("off")
             f.close()
             await message.channel.send("Upper and lowercase letters should now be randomized.")

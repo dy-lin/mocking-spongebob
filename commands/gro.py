@@ -36,7 +36,7 @@ class Gro(BaseCommand):
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
         # await message.channel.send(f"{os.getcwd()}")
-        savefile = "/Users/dianalin/mocking-spongebob/files/groceries.json"
+        savefile = "C:/Users/Diana/mocking-spongebob/files/groceries.json"
         if len(params) > 0: 
             subcommand = params[0].lower()
             if len(params) >= 2:

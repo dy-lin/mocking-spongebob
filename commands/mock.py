@@ -55,9 +55,9 @@ class Mock(BaseCommand):
                                 #      "Please, provide valid numbers")
            # return
         mocked = "*"
-        alternate = open("/Users/dianalin/mocking-spongebob/files/alternate", "r").read()
-        fix = open("/Users/dianalin/mocking-spongebob/files/fixl", "r").read()
-        embed = open("/Users/dianalin/mocking-spongebob/files/embed", "r").read()
+        alternate = open("C:/Users/Diana/mocking-spongebob/files/alternate", "r").read()
+        fix = open("C:/Users/Diana/mocking-spongebob/files/fixl", "r").read()
+        embed = open("C:/Users/Diana/mocking-spongebob/files/embed", "r").read()
         if alternate == "on":
             if text[0] == "i":
                 count = 0
