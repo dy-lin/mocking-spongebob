@@ -5,11 +5,11 @@ import re
 # but in lowercase
 
 # So, a command class named Random will generate a 'random' command
-class Tt(BaseCommand):
+class Reddit(BaseCommand):
 
     def __init__(self):
         # A quick description for the help message
-        description = "Embeds tiktok links"
+        description = "Embeds reddit links"
         # A list of parameters that the command will take as input
         # Parameters will be separated by spaces and fed to the 'params' 
         # argument in the handle() method
@@ -28,7 +28,7 @@ class Tt(BaseCommand):
         original = open("C:/Users/Diana/mocking-spongebob/files/original", "r").read()
         spoiler = False
         if len(params) > 1: 
-            ig_index = [ i for i, item in enumerate(params) if re.search('tiktok.com', item)][0]
+            ig_index = [ i for i, item in enumerate(params) if re.search('reddit.com', item)][0]
             if ig_index+1 < len(params):
                 if params[ig_index-1] == "||" and params[ig_index+1] == "||":
                     spoiler = True
@@ -37,22 +37,22 @@ class Tt(BaseCommand):
                 params.pop(ig_index)
                 params.pop(ig_index-1)
                 if original == "on":
-                    msg = " ".join(params) + "\n || " + url + " ||" + "\n || " + url.replace("tiktok", "vxtiktok") + " ||"
+                    msg = " ".join(params) + "\n || " + url + " ||" + "\n || " + url.replace("reddit", "vxreddit") + " ||"
                 else:
-                    msg = " ".join(params) + "\n || " + url.replace("tiktok", "vxtiktok") + " ||"
+                    msg = " ".join(params) + "\n || " + url.replace("reddit", "vxreddit") + " ||"
                 if len(params) == 1:
                     await message.channel.send(f"{msg}")
                 else:
                     await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
                 if original == "on":
-                    msg = " ".join(params) + "\n" + url + "\n" + url.replace("tiktok", "vxtiktok")
+                    msg = " ".join(params) + "\n" + url + "\n" + url.replace("reddit", "vxreddit")
                 else:
-                    msg = " ".join(params) + "\n" + url.replace("tiktok", "vxtiktok")
+                    msg = " ".join(params) + "\n" + url.replace("reddit", "vxreddit")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             if original == "on":
-                msg = params[0] + "\n" + params[0].replace("tiktok", "vxtiktok")
+                msg = params[0] + "\n" + params[0].replace("reddit", "vxreddit")
             else:
-                msg = params[0].replace("tiktok", "vxtiktok")
+                msg = params[0].replace("reddit", "vxreddit")
             await message.channel.send(msg)

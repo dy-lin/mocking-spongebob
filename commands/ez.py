@@ -25,6 +25,8 @@ class Ez(BaseCommand):
         # parameters as specified in __init__
         # 'message' is the discord.py Message object for the command to handle
         # 'client' is the bot Client object
+
+        original = open("C:/Users/Diana/mocking-spongebob/files/original", "r").read()
         spoiler = False
         if len(params) > 1: 
             ig_index = [ i for i, item in enumerate(params) if re.search('instagram.com', item)][0]
@@ -35,21 +37,31 @@ class Ez(BaseCommand):
             if spoiler == True:
                 params.pop(ig_index)
                 params.pop(ig_index-1)
-                og_msg = " ".join(params) + "\n || " + url + " ||"
+                # og_msg = " ".join(params) + "\n || " + url + " ||"
                 # always send the author
                 # if len(params) == 1:
                 #     await message.channel.send(f"{msg}")
                 # else:
-                await message.channel.send(f"**{message.author.nick}**: {og_msg}")
-                msg = " ".join(params) + "\n || " + url.replace("instagram", "instagramez") + " ||"
+                # await message.channel.send(f"**{message.author.nick}**: {url}")
+                if original == "on":
+                    msg = " ".join(params) + "\n || " + url + " ||" + "\n || " + url.replace("instagram", "instagramez") + " ||"
+                else:
+                    msg = " ".join(params) + "\n || " + url.replace("instagram", "instagramez") + " ||"
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
             else:
-                og_msg = " ".join(params) + "\n" + url
-                await message.channel.send(f"**{message.author.nick}**: {og_msg}")
-                msg = " ".join(params) + "\n" + url.replace("instagram", "instagramez")
+                # og_msg = " ".join(params) + "\n" + url
+                # await message.channel.send(f"**{message.author.nick}**: {url}")
+                if original == "on":
+                    msg = " ".join(params) + "\n" + url + "\n" + url.replace("instagram", "instagramez")
+                else:
+                    msg = " ".join(params) + "\n" + url.replace("instagram", "instagramez")
                 await message.channel.send(f"**{message.author.nick}**: {msg}")
         else:
             # await message.channel.send(msg)
-            await message.channel.send(f"**{message.author.nick}**: {params[0]}")
-            msg = params[0].replace("instagram", "instagramez")
+            # await message.channel.send(f"**{message.author.nick}**: {params[0]}")
+
+            if original == "on":
+                msg = params[0] + "\n" + params[0].replace("instagram", "instagramez")
+            else:
+                msg = params[0].replace("instagram", "instagramez")
             await message.channel.send(f"**{message.author.nick}**: {msg}")
