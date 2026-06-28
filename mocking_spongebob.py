@@ -67,34 +67,34 @@ def main():
                 except Exception as error:
                     print("Error while handling message", error, flush=True)
                     raise
-            elif "instagram.com" in text:
-                try:
-                    if embed == "dd":
-                        await message_handler.handle_command("dd", 
-                                              text.split(), message, client)
-                    elif embed == "ez":
-                        await message_handler.handle_command("ez", 
-                                              text.split(), message, client)
-                except Exception as error:
-                    print("Error while handling message", error, flush=True)
-                    print("Use `!embed` `dd|ez|current|off`", flush = True)
-                    raise
-            elif "vm.tiktok.com" in text:
-                try:
-                    await message_handler.handle_command("tt", 
-                                          text.split(), message, client)
-                except Exception as error:
-                    print("Error while handling message", error, flush=True)
-                    raise
-            elif "reddit.com" in text:
-                try:
-                    await message_handler.handle_command("reddit", 
-                                          text.split(), message, client)
-                except Exception as error:
-                    print("Error while handling message", error, flush=True)
-                    raise
+            # elif "instagram.com" in text:
+            #     try:
+            #         if embed == "dd":
+            #             await message_handler.handle_command("dd", 
+            #                                   text.split(), message, client)
+            #         elif embed == "ez":
+            #             await message_handler.handle_command("ez", 
+            #                                   text.split(), message, client)
+            #     except Exception as error:
+            #         print("Error while handling message", error, flush=True)
+            #         print("Use `!embed` `dd|ez|current|off`", flush = True)
+            #         raise
+            # elif "vm.tiktok.com" in text:
+            #     try:
+            #         await message_handler.handle_command("tt", 
+            #                               text.split(), message, client)
+            #     except Exception as error:
+            #         print("Error while handling message", error, flush=True)
+            #         raise
+            # elif "reddit.com" in text:
+            #     try:
+            #         await message_handler.handle_command("reddit", 
+            #                               text.split(), message, client)
+            #     except Exception as error:
+            #         print("Error while handling message", error, flush=True)
+            #         raise
 
-                  
+            #       
         # else:
         #    print(f"{message.author.name}: {text}", flush = True)
 
